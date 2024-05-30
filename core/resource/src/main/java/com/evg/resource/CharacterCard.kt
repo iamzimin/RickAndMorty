@@ -54,7 +54,7 @@ fun CharacterCard(image: Int, name: String, status: String, lastLocation: String
                     Text(text = name, fontSize = nameSize)
                     Row {
                         Image(
-                            painter = painterResource(R.drawable.default_image_background),
+                            painter = painterResource(R.drawable.search),
                             contentDescription = "Status",
                             modifier = Modifier
                                 .size(7.dp)
@@ -101,7 +101,7 @@ fun CharacterCardPreview() {
     RickAndMortyTheme {
         Column {
             CharacterCard(
-                image = R.drawable.default_image_background,
+                image = R.drawable.search,
                 name = "Jerry Smith",
                 status = "Alive - Human",
                 lastLocation = "Earth (Replacement Dimension)",

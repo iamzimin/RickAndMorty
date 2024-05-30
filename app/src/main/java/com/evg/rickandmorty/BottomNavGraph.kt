@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.evg.characters.CharactersScreen
+import com.evg.characters.presentation.CharactersScreen
 import com.evg.episodes.EpisodesScreen
 import com.evg.locations.LocationsScreen
 
