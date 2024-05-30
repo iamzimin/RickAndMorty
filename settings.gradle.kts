@@ -21,4 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "RickAndMorty"
 include(":app")
- 
+include(":core:resource")
+include(":features:characters")
+include(":features:locations")
+include(":features:episodes")

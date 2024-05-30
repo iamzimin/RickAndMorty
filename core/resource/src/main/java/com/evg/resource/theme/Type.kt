@@ -1,4 +1,4 @@
-package com.evg.rickandmorty.ui.theme
+package com.evg.resource.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,6 +1,5 @@
-package com.evg.rickandmorty.ui.theme
+package com.evg.resource.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
