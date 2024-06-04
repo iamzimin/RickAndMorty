@@ -20,6 +20,7 @@ javaxInject = "1"
 lifecycle = "2.8.1"
 hilt = "2.50"
 hiltNavigation = "1.2.0"
+paging = "3.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -68,6 +69,11 @@ dagger-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-comp
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
 # lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+# Paging
+jetpack-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+jetpack-paging-common = { group = "androidx.paging", name = "paging-common-android", version.ref = "paging" }
+jetpack-paging-compose = { group = "androidx.paging", name = "paging-compose-android", version.ref = "paging" }
 
 
 [plugins]

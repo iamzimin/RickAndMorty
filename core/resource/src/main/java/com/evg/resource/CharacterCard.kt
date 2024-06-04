@@ -25,7 +25,13 @@ import androidx.compose.ui.unit.sp
 import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
-fun CharacterCard(image: Int, name: String, status: String, lastLocation: String, firstSeen: String) {
+fun CharacterCard(
+    image: Int,
+    name: String,
+    status: String,
+    lastLocation: String,
+    firstSeen: String
+) {
     val cardHeight = 120.dp
 
     val nameSize = 16.sp

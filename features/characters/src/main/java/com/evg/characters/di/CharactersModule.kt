@@ -3,6 +3,7 @@ package com.evg.characters.di
 import com.evg.characters.data.repository.CharactersRepositoryImpl
 import com.evg.characters.domain.repository.CharactersRepository
 import com.evg.characters.domain.usecase.CharactersUseCases
+import com.evg.ram_api.data.CharacterPageSource
 import com.evg.ram_api.domain.repository.ApiRepository
 import dagger.Module
 import dagger.Provides
@@ -15,8 +16,8 @@ import javax.inject.Singleton
 object CharactersModule {
     @Provides
     @Singleton
-    fun provideCharactersRepository(apiRepository: ApiRepository): CharactersRepository {
+    fun provideCharactersRepository(characterPageSource: CharacterPageSource): CharactersRepository {
         println("provided CharactersRepositoryImpl")
-        return CharactersRepositoryImpl(apiRepository = apiRepository)
+        return CharactersRepositoryImpl(characterPageSource = characterPageSource)
     }
 }

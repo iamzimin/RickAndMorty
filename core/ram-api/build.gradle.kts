@@ -65,4 +65,8 @@ dependencies {
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
     //implementation(libs.dagger.hilt.navigation)
+
+    // Paging
+    //implementation(libs.jetpack.paging.runtime)
+    implementation(libs.jetpack.paging.common)
 }
