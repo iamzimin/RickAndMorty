@@ -1,9 +1,9 @@
-package com.evg.ram_api.models
+package com.evg.ram_api.domain.models
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LocationResponse(
+data class OriginResponse(
     val name: String,
     val url: String,
 )

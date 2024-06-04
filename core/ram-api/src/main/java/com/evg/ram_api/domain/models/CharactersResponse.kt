@@ -1,4 +1,4 @@
-package com.evg.ram_api.models
+package com.evg.ram_api.domain.models
 
 import kotlinx.serialization.Serializable
 

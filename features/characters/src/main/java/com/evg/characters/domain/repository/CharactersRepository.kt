@@ -1,5 +1,8 @@
 package com.evg.characters.domain.repository
 
+import com.evg.characters.domain.model.Character
+import kotlinx.coroutines.flow.Flow
+
 interface CharactersRepository {
-    suspend fun getAllCharacters()
+    fun getAllCharacters(): Flow<List<Character>>
 }

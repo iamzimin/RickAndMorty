@@ -1,6 +1,6 @@
-package com.evg.ram_api
+package com.evg.ram_api.domain
 
-import com.evg.ram_api.models.CharactersResponse
+import com.evg.ram_api.domain.models.CharactersResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -15,9 +15,9 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class KtorClient @Inject constructor() {
-    private val client = HttpClient(OkHttp) {
-        defaultRequest { url("https://rickandmortyapi.com/api") }
+class KtorClient {
+    val client = HttpClient(OkHttp) {
+        defaultRequest { url("https://rickandmortyapi.com") }
 
         install(Logging) {
             logger = Logger.SIMPLE
@@ -28,10 +28,5 @@ class KtorClient @Inject constructor() {
                 ignoreUnknownKeys = true
             })
         }
-    }
-
-    suspend fun getAllCharacters(): List<CharactersResponse> {
-        val response: HttpResponse = client.get("/character")
-        return response.body()
     }
 }
