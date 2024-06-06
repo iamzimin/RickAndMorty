@@ -1,7 +1,6 @@
 package com.evg.ram_api.data
 
 import android.net.Uri
-import android.net.http.HttpException
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.evg.ram_api.domain.Response
@@ -9,7 +8,7 @@ import com.evg.ram_api.domain.models.CharactersResponse
 import com.evg.ram_api.domain.repository.ApiRepository
 import javax.inject.Inject
 
-class CharacterPageSource @Inject constructor(
+class CharacterPageSourceRemote @Inject constructor(
     private val apiRepository: ApiRepository,
 ): PagingSource<Int, CharactersResponse>() {
     override fun getRefreshKey(state: PagingState<Int, CharactersResponse>): Int? {
@@ -24,7 +23,7 @@ class CharacterPageSource @Inject constructor(
         when (val response = apiRepository.getAllCharactersByPage(page = page)) {
             is Response.Success -> {
                 val characters = response.data.results
-                val prevKey = getPage(response.data.info.next)
+                val prevKey = getPage(response.data.info.prev)
                 val nextKey = getPage(response.data.info.next)
 
                 return LoadResult.Page(

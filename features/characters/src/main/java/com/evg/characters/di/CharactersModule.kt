@@ -2,9 +2,8 @@ package com.evg.characters.di
 
 import com.evg.characters.data.repository.CharactersRepositoryImpl
 import com.evg.characters.domain.repository.CharactersRepository
-import com.evg.characters.domain.usecase.CharactersUseCases
-import com.evg.ram_api.data.CharacterPageSource
-import com.evg.ram_api.domain.repository.ApiRepository
+import com.evg.database.data.CharacterPageSourceLocal
+import com.evg.ram_api.data.CharacterPageSourceRemote
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +15,14 @@ import javax.inject.Singleton
 object CharactersModule {
     @Provides
     @Singleton
-    fun provideCharactersRepository(characterPageSource: CharacterPageSource): CharactersRepository {
+    fun provideCharactersRepository(
+        characterPageSourceLocal: CharacterPageSourceLocal,
+        characterPageSourceRemote: CharacterPageSourceRemote,
+    ): CharactersRepository {
         println("provided CharactersRepositoryImpl")
-        return CharactersRepositoryImpl(characterPageSource = characterPageSource)
+        return CharactersRepositoryImpl(
+            characterPageSourceLocal = characterPageSourceLocal,
+            characterPageSourceRemote = characterPageSourceRemote,
+        )
     }
 }

@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.plugin)
-    kotlin("kapt")
+    alias(libs.plugins.jetbrains.kotlin.ksp)
 }
 
 android {
@@ -49,11 +49,6 @@ android {
     }
 }
 
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     implementation(project(":features:characters"))
     implementation(project(":features:episodes"))
@@ -80,7 +75,7 @@ dependencies {
 
     // Dagger Hilt
     implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
     //implementation(libs.dagger.hilt.navigation)
 
     //Ktor
