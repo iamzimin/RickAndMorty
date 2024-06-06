@@ -21,6 +21,7 @@ lifecycle = "2.8.1"
 hilt = "2.50"
 hiltNavigation = "1.2.0"
 paging = "3.3.0"
+coil = "2.6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -74,6 +75,9 @@ lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-
 jetpack-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 jetpack-paging-common = { group = "androidx.paging", name = "paging-common-android", version.ref = "paging" }
 jetpack-paging-compose = { group = "androidx.paging", name = "paging-compose-android", version.ref = "paging" }
+
+# Coil
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 
 [plugins]

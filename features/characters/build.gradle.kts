@@ -83,4 +83,7 @@ dependencies {
     implementation(libs.jetpack.paging.runtime)
     implementation(libs.jetpack.paging.common)
     implementation(libs.jetpack.paging.compose)
+
+    // Coil
+    implementation(libs.coil.compose)
 }

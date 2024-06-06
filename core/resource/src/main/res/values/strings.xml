@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RickAndMorty</string>
+    <string name="unknown">Unknown</string>
+
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="genderless">Genderless</string>
+
+</resources>

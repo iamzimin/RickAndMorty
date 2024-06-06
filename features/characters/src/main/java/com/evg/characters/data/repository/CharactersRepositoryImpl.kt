@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.evg.characters.domain.model.Character
 import com.evg.characters.domain.repository.CharactersRepository
-import com.evg.characters.domain.toCharacter
+import com.evg.characters.domain.mapper.toCharacter
 import com.evg.ram_api.data.CharacterPageSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
