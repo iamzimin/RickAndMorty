@@ -1,5 +1,6 @@
 package com.evg.characters.di
 
+import android.content.Context
 import com.evg.characters.data.repository.CharactersRepositoryImpl
 import com.evg.characters.domain.repository.CharactersRepository
 import com.evg.database.data.CharacterPageSourceLocal
@@ -7,6 +8,7 @@ import com.evg.ram_api.data.CharacterPageSourceRemote
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,11 +18,13 @@ object CharactersModule {
     @Provides
     @Singleton
     fun provideCharactersRepository(
+        @ApplicationContext context: Context,
         characterPageSourceLocal: CharacterPageSourceLocal,
         characterPageSourceRemote: CharacterPageSourceRemote,
     ): CharactersRepository {
         println("provided CharactersRepositoryImpl")
         return CharactersRepositoryImpl(
+            context = context,
             characterPageSourceLocal = characterPageSourceLocal,
             characterPageSourceRemote = characterPageSourceRemote,
         )
