@@ -84,4 +84,7 @@ dependencies {
     implementation(libs.ktor.negotiation)
     implementation(libs.ktor.logging)
     implementation(libs.ktor.serialization)
+
+    // Coil
+    implementation(libs.coil.compose)
 }

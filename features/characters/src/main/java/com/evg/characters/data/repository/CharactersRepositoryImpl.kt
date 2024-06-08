@@ -31,6 +31,6 @@ class CharactersRepositoryImpl @Inject constructor(
                 it.toCharacter()
             }
         }
-        return localPager
+        return remotePager
     }
 }

@@ -36,11 +36,6 @@ import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
 fun CharacterCard(
-    /*image: Int,
-    name: String,
-    status: String,
-    lastLocation: String,
-    firstSeen: String*/
     characterUI: CharacterUI
 ) {
     val cardHeight = 120.dp
