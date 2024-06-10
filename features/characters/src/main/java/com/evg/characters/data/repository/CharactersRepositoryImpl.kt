@@ -11,6 +11,8 @@ import androidx.paging.map
 import com.evg.characters.domain.model.Character
 import com.evg.characters.domain.repository.CharactersRepository
 import com.evg.characters.domain.mapper.toCharacter
+import com.evg.characters.domain.mapper.toCharacterFilterDTO
+import com.evg.characters.domain.model.CharacterFilter
 import com.evg.database.data.CharacterPageSourceLocal
 import com.evg.ram_api.data.CharacterPageSourceRemote
 import kotlinx.coroutines.flow.Flow
@@ -21,12 +23,12 @@ class CharactersRepositoryImpl @Inject constructor(
     private val context: Context,
     private val characterPageSourceLocal: CharacterPageSourceLocal,
     private val characterPageSourceRemote: CharacterPageSourceRemote,
-): CharactersRepository { // TODO if PagingData Error use CharacterPageSourceLocal
-    override fun getAllCharacters(): Flow<PagingData<Character>> {
+): CharactersRepository {
+    override fun getAllCharacters(filter: CharacterFilter): Flow<PagingData<Character>> {
         if (isInternetAvailable()) {
             return Pager(PagingConfig(
                 pageSize = 5,
-            )) { characterPageSourceRemote }.flow.map { pagingData ->
+            )) { characterPageSourceRemote.apply { this.filter = filter.toCharacterFilterDTO() } }.flow.map { pagingData ->
                 pagingData.map {
                     it.toCharacter()
                 }
