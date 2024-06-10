@@ -9,6 +9,9 @@ import com.evg.characters.domain.model.CharacterStatus
 import com.evg.characters.domain.model.GenderType
 import com.evg.characters.domain.model.StatusType
 import com.evg.database.domain.models.CharacterDBO
+import com.evg.database.domain.models.CharacterFilterDB
+import com.evg.database.domain.models.GenderTypeDB
+import com.evg.database.domain.models.StatusTypeDB
 import com.evg.ram_api.domain.models.CharacterFilterDTO
 import com.evg.ram_api.domain.models.CharactersResponse
 import com.evg.ram_api.domain.models.GenderTypeDTO
@@ -92,6 +95,28 @@ fun CharacterFilter.toCharacterFilterDTO(): CharacterFilterDTO {
             GenderType.MALE -> GenderTypeDTO.MALE
             GenderType.GENDERLESS -> GenderTypeDTO.GENDERLESS
             GenderType.UNKNOWN -> GenderTypeDTO.UNKNOWN
+            else -> null
+        },
+    )
+}
+
+
+fun CharacterFilter.toCharacterFilterDB(): CharacterFilterDB {
+    return CharacterFilterDB(
+        name = this.name,
+        status = when (this.status) {
+            StatusType.ALIVE -> StatusTypeDB.ALIVE
+            StatusType.DEAD -> StatusTypeDB.DEAD
+            StatusType.UNKNOWN -> StatusTypeDB.UNKNOWN
+            else -> null
+        },
+        species = this.species,
+        type = this.type,
+        gender = when (this.gender) {
+            GenderType.FEMALE -> GenderTypeDB.FEMALE
+            GenderType.MALE -> GenderTypeDB.MALE
+            GenderType.GENDERLESS -> GenderTypeDB.GENDERLESS
+            GenderType.UNKNOWN -> GenderTypeDB.UNKNOWN
             else -> null
         },
     )

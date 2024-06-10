@@ -11,6 +11,7 @@ import androidx.paging.map
 import com.evg.characters.domain.model.Character
 import com.evg.characters.domain.repository.CharactersRepository
 import com.evg.characters.domain.mapper.toCharacter
+import com.evg.characters.domain.mapper.toCharacterFilterDB
 import com.evg.characters.domain.mapper.toCharacterFilterDTO
 import com.evg.characters.domain.model.CharacterFilter
 import com.evg.database.data.CharacterPageSourceLocal
@@ -37,7 +38,7 @@ class CharactersRepositoryImpl @Inject constructor(
             return Pager(PagingConfig(
                 pageSize = 10,
                 initialLoadSize = 10,
-            )) { characterPageSourceLocal }.flow.map { pagingData ->
+            )) { characterPageSourceLocal.apply { this.filter = filter.toCharacterFilterDB() } }.flow.map { pagingData ->
                 pagingData.map {
                     it.toCharacter()
                 }

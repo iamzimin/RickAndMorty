@@ -3,6 +3,7 @@ package com.evg.database.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.evg.database.domain.models.CharacterDBO
+import com.evg.database.domain.models.CharacterFilterDB
 import com.evg.database.domain.repository.DatabaseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,6 +13,7 @@ class CharacterPageSourceLocal @Inject constructor(
     private val databaseRepository: DatabaseRepository,
 ): PagingSource<Int, CharacterDBO>() {
     private var totalLoadedCount = 0
+    var filter = CharacterFilterDB()
 
     override fun getRefreshKey(state: PagingState<Int, CharacterDBO>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -25,7 +27,11 @@ class CharacterPageSourceLocal @Inject constructor(
 
         try {
             val characters = withContext(Dispatchers.IO) {
-                databaseRepository.getAllCharactersByPage(pageSize = params.loadSize, offset = page * params.loadSize)
+                databaseRepository.getAllCharactersByPage(
+                    pageSize = params.loadSize,
+                    offset = page * params.loadSize,
+                    filter = filter,
+                )
             }
             totalLoadedCount += characters.size
 

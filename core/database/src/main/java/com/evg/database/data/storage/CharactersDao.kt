@@ -9,8 +9,25 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CharactersDao {
-    @Query("SELECT * FROM characterdbo LIMIT :pageSize OFFSET :offset")
-    fun getAllCharactersByPage(pageSize: Int, offset: Int): List<CharacterDBO>
+    @Query(
+        """SELECT * FROM characterdbo
+            WHERE
+                (:name IS NULL OR name LIKE '%' || :name || '%') AND
+                (:status IS NULL OR status LIKE '%' || :status || '%') AND
+                (:species IS NULL OR species LIKE '%' || :species || '%') AND
+                (:type IS NULL OR type LIKE '%' || :type || '%') AND
+                (:gender IS NULL OR gender = :gender) 
+            LIMIT :pageSize OFFSET :offset;"""
+    )
+    fun getAllCharactersByPage(
+        pageSize: Int,
+        offset: Int,
+        name: String?,
+        status: String?,
+        species: String?,
+        type: String?,
+        gender: String?
+    ): List<CharacterDBO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(character: CharacterDBO)
