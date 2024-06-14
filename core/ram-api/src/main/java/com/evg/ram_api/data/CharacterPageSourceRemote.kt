@@ -36,8 +36,11 @@ class CharacterPageSourceRemote @Inject constructor(
                 )
             }
             is Response.Failure -> {
-                val exception = response.exception
-                return LoadResult.Error(exception)
+                return LoadResult.Page(
+                    data = emptyList(),
+                    prevKey = null,
+                    nextKey = null
+                )
             }
         }
     }

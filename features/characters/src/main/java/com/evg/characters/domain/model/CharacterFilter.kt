@@ -20,11 +20,3 @@ enum class GenderType {
     GENDERLESS,
     UNKNOWN,
 }
-
-/*sealed class CharacterFilter {
-    data class Name(val name: String) : CharacterFilter()
-    data class Status(val status: StatusType) : CharacterFilter()
-    data class Species(val species: String) : CharacterFilter()
-    data class Type(val type: String) : CharacterFilter()
-    data class Gender(val gender: GenderType) : CharacterFilter()
-}*/

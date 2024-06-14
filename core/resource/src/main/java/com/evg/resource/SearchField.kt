@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
-fun SearchField(modifier: Modifier = Modifier.fillMaxWidth()) {
+fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (String) -> Unit) {
     val cardHeight = 50.dp
     val textSize = 16.sp
     val imageSize = 30.dp
@@ -56,7 +56,8 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth()) {
             ),
         value = textState,
         onValueChange = {
-                newText -> textState = newText
+            newText -> textState = newText
+            onValueChange(newText.text)
         },
         singleLine = true,
         textStyle = TextStyle(
@@ -92,6 +93,6 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth()) {
 @Composable
 fun SearchFieldPreview() {
     RickAndMortyTheme {
-        SearchField()
+        SearchField(onValueChange = {})
     }
 }
