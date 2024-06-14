@@ -59,9 +59,16 @@ fun CharactersScreen(
                 if (isShowDialog) {
                     CharacterFilterDialog(
                         hideDialog = { isShowDialog = false },
-                        onGenderChange = { viewModel.setCharacterGender(it) },
-                        onSpeciesChange = { viewModel.setCharacterSpecies(it) },
-                        onStatusChange = { viewModel.setCharacterStatus(it) },
+                        onGenderChange = {
+                            viewModel.setCharacterGender(it)
+                        },
+                        onSpeciesChange = {
+                            viewModel.setCharacterSpecies(it)
+                        },
+                        onStatusChange = {
+                            viewModel.setCharacterStatus(it)
+                        },
+                        viewModel = viewModel,
                     )
                 }
             }

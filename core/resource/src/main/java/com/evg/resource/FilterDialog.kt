@@ -15,24 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evg.resource.model.FilterData
 import com.evg.resource.model.FilterHeader
 import com.evg.resource.theme.RickAndMortyTheme
-
-@Composable
-fun FilterButton(onClick: () -> Unit, text: String, modifier: Modifier) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-    ) {
-        Text(
-            text = text,
-            maxLines = 1,
-        )
-    }
-}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -61,8 +49,7 @@ fun FilterDialog(
                         ) {
                             header.filters.forEach { filter ->
                                 FilterButton(
-                                    onClick = filter.onClick,
-                                    text = filter.text,
+                                    filterData = filter,
                                     modifier = Modifier
                                 )
                             }
@@ -79,7 +66,7 @@ fun FilterDialog(
                     onClick = onDismiss,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Cancel")
+                    Text("Clear")
                 }
                 Button(
                     onClick = onApplyFilter,
@@ -108,14 +95,17 @@ fun PreviewFilterDialog() {
                     filters = listOf(
                         FilterData(
                             text = "Alive",
+                            color = Color.Green,
                             onClick = { },
                         ),
                         FilterData(
                             text = "Dead",
+                            color = Color.Red,
                             onClick = { },
                         ),
                         FilterData(
                             text = "Unknown",
+                            color = Color.Black,
                             onClick = { },
                         ),
                     )
@@ -170,18 +160,22 @@ fun PreviewFilterDialog() {
                     filters = listOf(
                         FilterData(
                             text = "Female",
+                            color = Color.Red,
                             onClick = { },
                         ),
                         FilterData(
                             text = "Male",
+                            color = Color.Blue,
                             onClick = { },
                         ),
                         FilterData(
                             text = "Genderless",
+                            color = Color.Yellow,
                             onClick = { },
                         ),
                         FilterData(
                             text = "Unknown",
+                            color = Color.Black,
                             onClick = { },
                         ),
                     )

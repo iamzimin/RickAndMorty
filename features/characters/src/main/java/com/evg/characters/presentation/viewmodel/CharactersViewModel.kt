@@ -1,5 +1,8 @@
 package com.evg.characters.presentation.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -24,6 +27,10 @@ class CharactersViewModel @Inject constructor(
     charactersUseCases: CharactersUseCases,
 ) : ViewModel() {
     private val filter = MutableStateFlow(CharacterFilter())
+
+    var selectedStatus by mutableStateOf<StatusType?>(null)
+    var selectedSpecies by mutableStateOf<String?>(null)
+    var selectedGender by mutableStateOf<GenderType?>(null)
 
     val characters: StateFlow<PagingData<Character>> = filter.flatMapLatest { currentFilter ->
         charactersUseCases.getAllCharacters.invoke(filter = currentFilter)
