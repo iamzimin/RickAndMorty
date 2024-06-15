@@ -6,6 +6,7 @@ import com.evg.ram_api.domain.Response
 import com.evg.ram_api.domain.mapper.toCharacterDBO
 import com.evg.ram_api.domain.models.CharacterFilterDTO
 import com.evg.ram_api.domain.models.CharactersResponse
+import com.evg.ram_api.domain.models.EpisodeResponse
 import com.evg.ram_api.domain.models.PageResponse
 import com.evg.ram_api.domain.repository.ApiRepository
 import io.ktor.client.call.body
@@ -42,6 +43,28 @@ class ApiRepositoryImpl @Inject constructor(
             )
         }
         return response
+    }
+
+    override suspend fun getCharacterById(id: Int): Response<CharactersResponse> {
+        val url = "${ktor.mainURL}/character/$id"
+        val response = ktor.executeApiSafe {
+            ktor.client.get(url).body<CharactersResponse>()
+        }
+        return response
+    }
+
+    override suspend fun getEpisodesList(listIds: List<Int>): Response<List<EpisodeResponse>> {
+        val idParams = listIds.joinToString(",")
+        val url = "${ktor.mainURL}/episode/$idParams"
+
+        return ktor.executeApiSafe {
+            if (listIds.size == 1) {
+                val singleEpisode = ktor.client.get(url).body<EpisodeResponse>()
+                listOf(singleEpisode)
+            } else {
+                ktor.client.get(url).body<List<EpisodeResponse>>()
+            }
+        }
     }
 
 }

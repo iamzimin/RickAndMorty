@@ -6,6 +6,7 @@ import com.evg.characters.domain.model.CharacterGender
 import com.evg.characters.domain.model.CharacterLocation
 import com.evg.characters.domain.model.CharacterOrigin
 import com.evg.characters.domain.model.CharacterStatus
+import com.evg.characters.domain.model.Episode
 import com.evg.characters.domain.model.GenderType
 import com.evg.characters.domain.model.StatusType
 import com.evg.database.domain.models.CharacterDBO
@@ -14,6 +15,7 @@ import com.evg.database.domain.models.GenderTypeDB
 import com.evg.database.domain.models.StatusTypeDB
 import com.evg.ram_api.domain.models.CharacterFilterDTO
 import com.evg.ram_api.domain.models.CharactersResponse
+import com.evg.ram_api.domain.models.EpisodeResponse
 import com.evg.ram_api.domain.models.GenderTypeDTO
 import com.evg.ram_api.domain.models.StatusTypeDTO
 
@@ -121,3 +123,16 @@ fun CharacterFilter.toCharacterFilterDB(): CharacterFilterDB {
         },
     )
 }
+
+fun EpisodeResponse.toEpisode(): Episode {
+    return Episode(
+        id = this.id,
+        name = this.name,
+        air_date = this.air_date,
+        episode = this.episode,
+        characters = this.characters,
+        url = this.url,
+    )
+}
+
+

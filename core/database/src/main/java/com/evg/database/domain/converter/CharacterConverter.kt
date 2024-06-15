@@ -8,22 +8,22 @@ import kotlinx.serialization.json.Json
 
 object CharacterConverter {
     @TypeConverter
-    fun fromOriginResponse(origin: CharacterOriginDBO): String {
+    fun fromCharacterOriginResponse(origin: CharacterOriginDBO): String {
         return Json.encodeToString(origin)
     }
 
     @TypeConverter
-    fun toOriginResponse(originString: String): CharacterOriginDBO {
+    fun toCharacterOriginResponse(originString: String): CharacterOriginDBO {
         return Json.decodeFromString(originString)
     }
 
     @TypeConverter
-    fun fromLocationResponse(location: CharacterLocationDBO): String {
+    fun fromCharacterLocationResponse(location: CharacterLocationDBO): String {
         return Json.encodeToString(location)
     }
 
     @TypeConverter
-    fun toLocationResponse(locationString: String): CharacterLocationDBO {
+    fun toCharacterLocationResponse(locationString: String): CharacterLocationDBO {
         return Json.decodeFromString(locationString)
     }
 

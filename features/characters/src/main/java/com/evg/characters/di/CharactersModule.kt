@@ -5,6 +5,7 @@ import com.evg.characters.data.repository.CharactersRepositoryImpl
 import com.evg.characters.domain.repository.CharactersRepository
 import com.evg.database.data.CharacterPageSourceLocal
 import com.evg.ram_api.data.CharacterPageSourceRemote
+import com.evg.ram_api.domain.repository.ApiRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,12 +20,14 @@ object CharactersModule {
     @Singleton
     fun provideCharactersRepository(
         @ApplicationContext context: Context,
+        apiRepository: ApiRepository,
         characterPageSourceLocal: CharacterPageSourceLocal,
         characterPageSourceRemote: CharacterPageSourceRemote,
     ): CharactersRepository {
         println("provided CharactersRepositoryImpl")
         return CharactersRepositoryImpl(
             context = context,
+            apiRepository = apiRepository,
             characterPageSourceLocal = characterPageSourceLocal,
             characterPageSourceRemote = characterPageSourceRemote,
         )

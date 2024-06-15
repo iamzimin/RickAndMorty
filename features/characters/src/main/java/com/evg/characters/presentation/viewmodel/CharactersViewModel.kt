@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.evg.characters.domain.model.Character
 import com.evg.characters.domain.model.CharacterFilter
+import com.evg.characters.domain.model.Episode
 import com.evg.characters.domain.model.GenderType
 import com.evg.characters.domain.model.StatusType
 import com.evg.characters.domain.usecase.CharactersUseCases
@@ -19,22 +20,49 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
-    charactersUseCases: CharactersUseCases,
+    private val charactersUseCases: CharactersUseCases,
 ) : ViewModel() {
     private val filter = MutableStateFlow(CharacterFilter())
+    val characters: StateFlow<PagingData<Character>> = filter.flatMapLatest { currentFilter ->
+        charactersUseCases.getAllCharacters.invoke(filter = currentFilter)
+    }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+    private val _characterInfo = MutableStateFlow<Character?>(null)
+    val characterInfo: StateFlow<Character?> get() = _characterInfo
+
+    private val _characterEpisodes = MutableStateFlow<List<Episode>?>(null)
+    val characterEpisodes: StateFlow<List<Episode>?> get() = _characterEpisodes
 
     var selectedStatus by mutableStateOf<StatusType?>(null)
     var selectedSpecies by mutableStateOf<String?>(null)
     var selectedGender by mutableStateOf<GenderType?>(null)
 
-    val characters: StateFlow<PagingData<Character>> = filter.flatMapLatest { currentFilter ->
-        charactersUseCases.getAllCharacters.invoke(filter = currentFilter)
-    }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+    fun getCharacterInfo(id: Int) {
+        viewModelScope.launch {
+            charactersUseCases.getCharacterById(id = id)
+                .collect { character ->
+                    _characterInfo.value = character
+                    character?.let {
+                        getCharacterEpisodes(it.episode)
+                    }
+                }
+        }
+    }
+
+    private fun getCharacterEpisodes(episodeUrls: List<String>) {
+        viewModelScope.launch {
+            charactersUseCases.getEpisodesList(episodeUrls)
+                .collect { episodes ->
+                    _characterEpisodes.value = episodes
+                }
+        }
+    }
 
     fun setNameFilter(name: String) {
         filter.value = filter.value.copy(name = name)
