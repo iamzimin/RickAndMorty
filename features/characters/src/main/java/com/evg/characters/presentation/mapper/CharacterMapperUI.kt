@@ -3,11 +3,11 @@ package com.evg.characters.presentation.mapper
 import com.evg.characters.domain.model.Character
 import com.evg.characters.domain.model.CharacterGender
 import com.evg.characters.domain.model.CharacterStatus
-import com.evg.characters.presentation.model.CharacterGenderUI
-import com.evg.characters.presentation.model.CharacterLocationUI
-import com.evg.characters.presentation.model.CharacterOriginUI
-import com.evg.characters.presentation.model.CharacterStatusUI
-import com.evg.characters.presentation.model.CharacterUI
+import com.evg.resource.model.character.CharacterGenderUI
+import com.evg.resource.model.character.CharacterLocationUI
+import com.evg.resource.model.character.CharacterOriginUI
+import com.evg.resource.model.character.CharacterStatusUI
+import com.evg.resource.model.character.CharacterUI
 
 internal fun Character.toCharacterUI() : CharacterUI {
     return CharacterUI(

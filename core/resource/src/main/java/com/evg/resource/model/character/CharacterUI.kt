@@ -1,4 +1,4 @@
-package com.evg.characters.presentation.model
+package com.evg.resource.model.character
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color

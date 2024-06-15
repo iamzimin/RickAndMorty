@@ -1,7 +1,10 @@
-package com.evg.characters.presentation
+package com.evg.resource
 
-import androidx.compose.foundation.Image
+import android.app.PendingIntent
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,28 +19,31 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.TaskStackBuilder
 import coil.compose.AsyncImage
-import com.evg.characters.presentation.model.CharacterGenderUI
-import com.evg.characters.presentation.model.CharacterLocationUI
-import com.evg.characters.presentation.model.CharacterOriginUI
-import com.evg.characters.presentation.model.CharacterStatusUI
-import com.evg.characters.presentation.model.CharacterUI
-import com.evg.resource.R
+import com.evg.resource.model.character.CharacterGenderUI
+import com.evg.resource.model.character.CharacterLocationUI
+import com.evg.resource.model.character.CharacterOriginUI
+import com.evg.resource.model.character.CharacterStatusUI
+import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.theme.RickAndMortyTheme
+import kotlin.coroutines.coroutineContext
 
 @Composable
 fun CharacterCard(
     characterUI: CharacterUI
 ) {
+    val context = LocalContext.current
     val cardHeight = 120.dp
 
     val nameSize = 16.sp
@@ -49,7 +55,22 @@ fun CharacterCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(cardHeight)
-            .padding(horizontal = 10.dp, vertical = 5.dp),
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .clickable {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://rickandmortyapi.com/api/character/${characterUI.id}")
+                )
+                context.startActivity(intent)
+                /*val pendingIntent = TaskStackBuilder.create(context).run {
+                    addNextIntentWithParentStack(intent)
+                    getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                }
+                pendingIntent?.send()*/
+            },
     ) {
         Row {
             AsyncImage(

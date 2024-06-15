@@ -25,6 +25,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
+import com.evg.resource.CharacterCard
 import com.evg.resource.theme.RickAndMortyTheme
 import com.evg.resource.R
 
