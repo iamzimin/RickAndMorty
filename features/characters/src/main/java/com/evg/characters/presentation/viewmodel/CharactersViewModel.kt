@@ -39,18 +39,23 @@ class CharactersViewModel @Inject constructor(
     private val _characterEpisodes = MutableStateFlow<List<Episode>?>(null)
     val characterEpisodes: StateFlow<List<Episode>?> get() = _characterEpisodes
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     var selectedStatus by mutableStateOf<StatusType?>(null)
     var selectedSpecies by mutableStateOf<String?>(null)
     var selectedGender by mutableStateOf<GenderType?>(null)
 
     fun getCharacterInfo(id: Int) {
         viewModelScope.launch {
+            _isLoading.value = true
             charactersUseCases.getCharacterById(id = id)
                 .collect { character ->
                     _characterInfo.value = character
                     character?.let {
                         getCharacterEpisodes(it.episode)
                     }
+                    _isLoading.value = false
                 }
         }
     }
