@@ -29,6 +29,7 @@ import com.evg.resource.theme.VerticalSpacerPadding
 @Composable
 fun FilterDialog(
     onDismiss: () -> Unit,
+    onClear: () -> Unit,
     onApplyFilter: () -> Unit,
     header: String,
     filters: List<FilterHeader>,
@@ -65,7 +66,7 @@ fun FilterDialog(
         dismissButton = {
             Row(horizontalArrangement = Arrangement.spacedBy(buttonSpace)) {
                 Button(
-                    onClick = onDismiss,
+                    onClick = onClear,
                     modifier = Modifier.weight(1f),
                 ) {
                     Text(
@@ -96,6 +97,7 @@ fun PreviewFilterDialog() {
     RickAndMortyTheme {
         FilterDialog(
             onDismiss = {},
+            onClear = {},
             onApplyFilter = {},
             header = "Filter characters",
             filters = listOf(

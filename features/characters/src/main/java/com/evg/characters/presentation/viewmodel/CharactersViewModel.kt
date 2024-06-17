@@ -75,13 +75,16 @@ class CharactersViewModel @Inject constructor(
 
     fun setCharacterStatus(status: StatusType?) {
         filter.value = filter.value.copy(status = status)
+        selectedStatus = filter.value.status
     }
 
     fun setCharacterSpecies(species: String?) {
         filter.value = filter.value.copy(species = species)
+        selectedSpecies = filter.value.species
     }
 
     fun setCharacterGender(gender: GenderType?) {
         filter.value = filter.value.copy(gender = gender)
+        selectedGender = filter.value.gender
     }
 }

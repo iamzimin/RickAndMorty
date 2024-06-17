@@ -38,6 +38,9 @@ fun CharacterFilterDialog(
 
     FilterDialog(
         onDismiss = {
+            hideDialog()
+        },
+        onClear = {
             onStatusChange?.let { it(null) }
             onSpeciesChange?.let { it(null) }
             onGenderChange?.let { it(null) }
