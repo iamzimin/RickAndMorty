@@ -11,12 +11,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evg.resource.theme.RickAndMortyTheme
+import com.evg.resource.theme.VerticalSpacerPadding
 
 @Composable
 fun ImageTitle(modifier: Modifier) {
     Column(
         modifier = modifier
-            .padding(top = 50.dp, bottom = 10.dp)
+            .padding(bottom = VerticalSpacerPadding)
     ) {
         Image(
             painter = painterResource(id = R.drawable.rick_and_morty),

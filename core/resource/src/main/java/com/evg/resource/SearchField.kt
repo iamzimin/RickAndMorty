@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -35,12 +36,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
 fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (String) -> Unit) {
     val cardHeight = 50.dp
-    val textSize = 16.sp
+    //val textSize = 15.sp
     val imageSize = 30.dp
     var textState by remember {
         mutableStateOf(TextFieldValue())
@@ -52,7 +54,7 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (St
             .background(color = Color.Transparent)
             .border(
                 BorderStroke(2.dp, Color.Black),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(BorderRadius)
             ),
         value = textState,
         onValueChange = {
@@ -60,13 +62,11 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (St
             onValueChange(newText.text)
         },
         singleLine = true,
-        textStyle = TextStyle(
-            fontSize = textSize,
-        ),
+        textStyle = MaterialTheme.typography.bodyMedium,
         placeholder = {
             Text(
                 text = "Search",
-                fontSize = textSize,
+                style = MaterialTheme.typography.bodyMedium,
             )
         },
         leadingIcon = {

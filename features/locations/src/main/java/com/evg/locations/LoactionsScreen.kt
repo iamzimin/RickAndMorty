@@ -26,8 +26,7 @@ fun LocationsScreen() {
     ) {
         Text(
             text = "Locations",
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineLarge,
             color = Color.White
         )
     }

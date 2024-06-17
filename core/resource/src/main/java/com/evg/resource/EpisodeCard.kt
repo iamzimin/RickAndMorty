@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.evg.resource.model.character.EpisodeUI
+import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
@@ -41,10 +42,11 @@ fun EpisodeCard(
     val context = LocalContext.current
     val cardHeight = 120.dp
     Card(
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(BorderRadius),
         modifier = Modifier
             .fillMaxWidth()
             .height(cardHeight)
+            .clip(shape = RoundedCornerShape(BorderRadius))
             .padding(vertical = 5.dp)
             .clickable {
                 val intent = Intent(

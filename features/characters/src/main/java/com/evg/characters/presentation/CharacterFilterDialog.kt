@@ -19,6 +19,22 @@ fun CharacterFilterDialog(
     onGenderChange: ((GenderType?) -> Unit)? = null,
     viewModel: CharactersViewModel? = null,
 ) {
+    fun onClickSelectedStatus(status: StatusType?): () -> Unit {
+        return {
+            viewModel?.selectedStatus = if (viewModel?.selectedStatus == status) null else status
+        }
+    }
+    fun onClickSelectedSpecies(species: String?): () -> Unit {
+        return {
+            viewModel?.selectedSpecies = if (viewModel?.selectedSpecies == species) null else species
+        }
+    }
+    fun onClickSelectedGender(genderType: GenderType?): () -> Unit {
+        return {
+            viewModel?.selectedGender = if (viewModel?.selectedGender == genderType) null else genderType
+        }
+    }
+
     FilterDialog(
         onDismiss = {
             onStatusChange?.let { it(null) }
@@ -41,19 +57,19 @@ fun CharacterFilterDialog(
                         text = "Alive",
                         color = Color.Green,
                         selected = viewModel?.selectedStatus == StatusType.ALIVE,
-                        onClick = { viewModel?.selectedStatus = StatusType.ALIVE },
+                        onClick = onClickSelectedStatus(StatusType.ALIVE),
                     ),
                     FilterData(
                         text = "Dead",
                         color = Color.Red,
                         selected = viewModel?.selectedStatus == StatusType.DEAD,
-                        onClick = { viewModel?.selectedStatus = StatusType.DEAD },
+                        onClick = onClickSelectedStatus(StatusType.DEAD),
                     ),
                     FilterData(
                         text = "Unknown",
                         color = Color.Black,
                         selected = viewModel?.selectedStatus == StatusType.UNKNOWN,
-                        onClick = { viewModel?.selectedStatus = StatusType.UNKNOWN },
+                        onClick = onClickSelectedStatus(StatusType.UNKNOWN),
                     ),
                 )
             ),
@@ -63,52 +79,52 @@ fun CharacterFilterDialog(
                     FilterData(
                         text = "Human",
                         selected = viewModel?.selectedSpecies == "Human",
-                        onClick = { viewModel?.selectedSpecies = "Human" },
+                        onClick = onClickSelectedSpecies("Human"),
                     ),
                     FilterData(
                         text = "Alien",
                         selected = viewModel?.selectedSpecies == "Alien",
-                        onClick = { viewModel?.selectedSpecies = "Alien" },
+                        onClick = onClickSelectedSpecies("Alien"),
                     ),
                     FilterData(
                         text = "Humanoid",
                         selected = viewModel?.selectedSpecies == "Humanoid",
-                        onClick = { viewModel?.selectedSpecies = "Humanoid" },
+                        onClick = onClickSelectedSpecies("Humanoid"),
                     ),
                     FilterData(
                         text = "Poopybutthole",
                         selected = viewModel?.selectedSpecies == "Poopybutthole",
-                        onClick = { viewModel?.selectedSpecies = "Poopybutthole" },
+                        onClick = onClickSelectedSpecies("Poopybutthole"),
                     ),
                     FilterData(
                         text = "Mythological Creature",
                         selected = viewModel?.selectedSpecies == "Mythological Creature",
-                        onClick = { viewModel?.selectedSpecies = "Mythological Creature" },
+                        onClick = onClickSelectedSpecies("Mythological Creature"),
                     ),
                     FilterData(
                         text = "Animal",
                         selected = viewModel?.selectedSpecies == "Animal",
-                        onClick = { viewModel?.selectedSpecies = "Animal" },
+                        onClick = onClickSelectedSpecies("Animal"),
                     ),
                     FilterData(
                         text = "Robot",
                         selected = viewModel?.selectedSpecies == "Robot",
-                        onClick = { viewModel?.selectedSpecies = "Robot" },
+                        onClick = onClickSelectedSpecies("Robot"),
                     ),
                     FilterData(
                         text = "Cronenberg",
                         selected = viewModel?.selectedSpecies == "Cronenberg",
-                        onClick = { viewModel?.selectedSpecies = "Cronenberg" },
+                        onClick = onClickSelectedSpecies("Cronenberg"),
                     ),
                     FilterData(
                         text = "Disease",
                         selected = viewModel?.selectedSpecies == "Disease",
-                        onClick = { viewModel?.selectedSpecies = "Disease" },
+                        onClick = onClickSelectedSpecies("Disease"),
                     ),
                     FilterData(
                         text = "Unknown",
                         selected = viewModel?.selectedSpecies == "Unknown",
-                        onClick = { viewModel?.selectedSpecies = "Unknown" },
+                        onClick = onClickSelectedSpecies("Unknown"),
                     ),
                 )
             ),
@@ -119,30 +135,31 @@ fun CharacterFilterDialog(
                         text = "Female",
                         color = Color.Red,
                         selected = viewModel?.selectedGender == GenderType.FEMALE,
-                        onClick = { viewModel?.selectedGender = GenderType.FEMALE },
+                        onClick = onClickSelectedGender(GenderType.FEMALE),
                     ),
                     FilterData(
                         text = "Male",
                         color = Color.Blue,
                         selected = viewModel?.selectedGender == GenderType.MALE,
-                        onClick = { viewModel?.selectedGender = GenderType.MALE },
+                        onClick = onClickSelectedGender(GenderType.MALE),
                     ),
                     FilterData(
                         text = "Genderless",
                         color = Color.Yellow,
                         selected = viewModel?.selectedGender == GenderType.GENDERLESS,
-                        onClick = { viewModel?.selectedGender = GenderType.GENDERLESS },
+                        onClick = onClickSelectedGender(GenderType.GENDERLESS),
                     ),
                     FilterData(
                         text = "Unknown",
                         color = Color.Black,
                         selected = viewModel?.selectedGender == GenderType.UNKNOWN,
-                        onClick = { viewModel?.selectedGender = GenderType.UNKNOWN },
+                        onClick = onClickSelectedGender(GenderType.UNKNOWN),
                     ),
                 )
             ),
         ),
     )
+
 }
 
 @Composable

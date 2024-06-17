@@ -9,14 +9,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentCompositionLocalContext
@@ -24,8 +28,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +43,7 @@ import com.evg.resource.model.character.CharacterLocationUI
 import com.evg.resource.model.character.CharacterOriginUI
 import com.evg.resource.model.character.CharacterStatusUI
 import com.evg.resource.model.character.CharacterUI
+import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.RickAndMortyTheme
 import kotlin.coroutines.coroutineContext
 
@@ -44,48 +52,48 @@ fun CharacterCard(
     characterUI: CharacterUI
 ) {
     val context = LocalContext.current
-    val cardHeight = 120.dp
+    val cardHeight = 140.dp
 
-    val nameSize = 16.sp
-    val statusSize = 10.sp
-    val headerSize = 10.sp
-    val descriptionSize = 11.sp
     Card (
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(BorderRadius),
         modifier = Modifier
             .fillMaxWidth()
             .height(cardHeight)
-            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .padding(vertical = 5.dp)
+            .clip(shape = RoundedCornerShape(BorderRadius))
             .clickable {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("https://rickandmortyapi.com/api/character/${characterUI.id}")
                 )
                 context.startActivity(intent)
-                /*val pendingIntent = TaskStackBuilder.create(context).run {
-                    addNextIntentWithParentStack(intent)
-                    getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    )
-                }
-                pendingIntent?.send()*/
             },
+        /*colors = CardColors(
+            containerColor = Color.Red,
+            contentColor = Color.Unspecified,
+            disabledContainerColor = Color.Unspecified,
+            disabledContentColor = Color.Unspecified,
+        )*/
     ) {
         Row {
             AsyncImage(
                 model = characterUI.image,
                 modifier = Modifier.size(cardHeight),
                 contentDescription = characterUI.image,
+                alignment = Alignment.CenterStart,
             )
             Column (
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(start = 10.dp),
+                    .fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceAround,
             ) {
                 Column {
-                    Text(text = characterUI.name, fontSize = nameSize)
+                    Text(
+                        text = characterUI.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     Row {
                         Box(
                             modifier = Modifier
@@ -96,31 +104,37 @@ fun CharacterCard(
                         )
                         Text(
                             text = stringResource(id = characterUI.status.naming),
-                            fontSize = statusSize,
+                            style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(start = 5.dp)
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(3.dp))
                 Column {
                     Text(
                         text = "First seen in:",
-                        fontSize = headerSize,
+                        style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray,
                     )
                     Text(
                         text = characterUI.origin.name,
-                        fontSize = descriptionSize,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
+                Spacer(modifier = Modifier.height(3.dp))
                 Column {
                     Text(
                         text = "Last known location:",
-                        fontSize = headerSize,
+                        style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray,
                     )
                     Text(
                         text = characterUI.location.name,
-                        fontSize = descriptionSize,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

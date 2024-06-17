@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.evg.resource.model.FilterData
 import com.evg.resource.model.FilterHeader
 import com.evg.resource.theme.RickAndMortyTheme
+import com.evg.resource.theme.VerticalSpacerPadding
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -31,7 +32,6 @@ fun FilterDialog(
     filters: List<FilterHeader>,
 ) {
     val buttonSpace = 8.dp
-    val headerSpace = 16.dp
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -43,7 +43,7 @@ fun FilterDialog(
                 filters.forEach { header ->
                     Column {
                         Text(header.title)
-                        Spacer(modifier = Modifier.height(buttonSpace))
+                        Spacer(modifier = Modifier.height(5.dp))
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(buttonSpace, Alignment.Start),
                         ) {
@@ -54,7 +54,7 @@ fun FilterDialog(
                                 )
                             }
                         }
-                        Spacer(modifier = Modifier.height(headerSpace))
+                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
                     }
                 }
             }

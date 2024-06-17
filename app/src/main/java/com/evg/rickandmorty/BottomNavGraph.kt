@@ -1,7 +1,10 @@
 package com.evg.rickandmorty
 
 import android.content.Intent
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,10 +17,11 @@ import com.evg.episodes.EpisodesScreen
 import com.evg.locations.LocationsScreen
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(
         navController = navController,
-        startDestination = BottomBarScreen.Characters.route
+        startDestination = BottomBarScreen.Characters.route,
+        modifier = Modifier.padding(paddingValues)
     ) {
         composable(route = BottomBarScreen.Episodes.route) {
             EpisodesScreen()

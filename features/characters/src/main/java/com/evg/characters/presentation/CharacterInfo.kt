@@ -2,10 +2,11 @@ package com.evg.characters.presentation
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,20 +15,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,89 +44,106 @@ import com.evg.resource.model.character.CharacterOriginUI
 import com.evg.resource.model.character.CharacterStatusUI
 import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.model.character.EpisodeUI
+import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.RickAndMortyTheme
+import com.evg.resource.theme.VerticalSpacerPadding
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CharacterInfo(
     characterUI: CharacterUI,
     episodesUI: List<EpisodeUI>,
 ) {
-    val cardHeight = 300.dp
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        item {
-            Column {
-                Row(
-                    //modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-                ) {
-                    Text(
-                        text = characterUI.name,
-                        fontSize = 24.sp,
-                    )
-                }
-                Row {
-                    Text(
-                        text = stringResource(id = characterUI.status.naming),
-                        modifier = Modifier
-                            .border(
-                                width = 2.dp,
-                                color = characterUI.status.color,
-                                shape = CircleShape
-                            )
-                            .padding(7.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-                AsyncImage(
-                    model = characterUI.image,
-                    modifier = Modifier
-                        .size(cardHeight)
-                        .align(alignment = Alignment.CenterHorizontally),
-                    contentDescription = characterUI.image,
-                )
-
-                Row {
-                    InfoCard(
-                        header = "Species",
-                        content = characterUI.species,
-                        modifier = Modifier.weight(1f),
-                    )
-                    InfoCard(
-                        header = "Gender",
-                        content = stringResource(id = characterUI.gender.gender),
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-
-                Row {
-                    InfoCard(
-                        header = "Origin",
-                        content = characterUI.origin.name,
-                        modifier = Modifier.weight(1f),
-                        isClickable = true,
-                        link = characterUI.origin.url
-                    )
-                    InfoCard(
-                        header = "Type",
-                        content = characterUI.type.ifEmpty { "None" },
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
+    Column {
+        Row {
             Text(
-                text = "Episodes",
-                fontSize = 24.sp,
+                text = characterUI.name,
+                style = MaterialTheme.typography.titleLarge,
             )
         }
+        Spacer(modifier = Modifier.height(5.dp))
+        CompositionLocalProvider(
+            LocalOverscrollConfiguration provides null
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        //Row {
+                        Text(
+                            text = stringResource(id = characterUI.status.naming),
+                            modifier = Modifier
+                                .border(
+                                    width = 2.dp,
+                                    color = characterUI.status.color,
+                                    shape = CircleShape
+                                )
+                                .padding(7.dp)
+                        )
+                        //}
+                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
+                        AsyncImage(
+                            model = characterUI.image,
+                            modifier = Modifier
+                                .fillParentMaxWidth()
+                                .clip(shape = RoundedCornerShape(BorderRadius))
+                                .align(alignment = Alignment.CenterHorizontally),
+                            contentDescription = characterUI.image,
+                            contentScale = ContentScale.FillWidth,
+                        )
 
-        items(episodesUI) { episode ->
-            EpisodeCard(episode)
+                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
+
+                        Row {
+                            InfoCard(
+                                header = "Species",
+                                content = characterUI.species,
+                                modifier = Modifier.weight(1f),
+                            )
+                            Spacer(modifier = Modifier.width(VerticalSpacerPadding))
+                            InfoCard(
+                                header = "Gender",
+                                content = stringResource(id = characterUI.gender.gender),
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
+
+                        Row {
+                            InfoCard(
+                                header = "Origin",
+                                content = characterUI.origin.name,
+                                modifier = Modifier.weight(1f),
+                                isClickable = true,
+                                link = characterUI.origin.url
+                            )
+                            Spacer(modifier = Modifier.padding(5.dp))
+                            InfoCard(
+                                header = "Type",
+                                content = characterUI.type.ifEmpty { "None" },
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(VerticalSpacerPadding))
+
+                    Text(
+                        text = "Episodes",
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+
+                items(episodesUI) { episode ->
+                    EpisodeCard(episode)
+                }
+            }
         }
+
     }
 }
 
@@ -137,8 +159,7 @@ private fun InfoCard(
 
     Box(
         modifier = modifier
-            .padding(5.dp)
-            .clip(RoundedCornerShape(5.dp))
+            .clip(RoundedCornerShape(BorderRadius))
             .then(
                 if (isClickable && link.isNotEmpty()) {
                     Modifier.clickable {
@@ -158,23 +179,32 @@ private fun InfoCard(
                     .background(Color.Gray)
                     .padding(5.dp)
             ) {
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = header,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
+                        .align(Alignment.CenterHorizontally),
+                    overflow = TextOverflow.Ellipsis
                 )
+                Spacer(modifier = Modifier.weight(1f))
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(60.dp)
                     .background(Color.LightGray)
-                    .padding(20.dp)
+                    .padding(10.dp)
             ) {
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = content,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
+                        .align(Alignment.CenterHorizontally),
+                    overflow = TextOverflow.Ellipsis
                 )
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }
@@ -193,7 +223,7 @@ fun CharacterInfoPreview() {
                 type = "",
                 gender = CharacterGenderUI.MALE,
                 origin = CharacterOriginUI(
-                    name = "Earth (C-137)",
+                    name = "Earth (C-137)ffffffffffffffffffffffff",
                     url = "https://rickandmortyapi.com/api/location/1"
                 ),
                 location = CharacterLocationUI(
