@@ -1,6 +1,7 @@
 package com.evg.resource
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -80,7 +81,8 @@ fun EpisodeCard(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun EpisodeCardPreview() {
     RickAndMortyTheme {

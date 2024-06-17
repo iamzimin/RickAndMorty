@@ -1,6 +1,7 @@
 package com.evg.characters.presentation
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
@@ -176,7 +177,7 @@ private fun InfoCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Gray)
+                    .background(MaterialTheme.colorScheme.secondary)
                     .padding(5.dp)
             ) {
                 Spacer(modifier = Modifier.weight(1f))
@@ -193,7 +194,7 @@ private fun InfoCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .background(Color.LightGray)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(10.dp)
             ) {
                 Spacer(modifier = Modifier.weight(1f))
@@ -210,7 +211,8 @@ private fun InfoCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun CharacterInfoPreview() {
     RickAndMortyTheme {

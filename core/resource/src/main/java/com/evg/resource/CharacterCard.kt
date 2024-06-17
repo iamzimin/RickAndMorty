@@ -2,6 +2,7 @@ package com.evg.resource
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -142,7 +143,8 @@ fun CharacterCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun CharacterCardPreview() {
     RickAndMortyTheme {

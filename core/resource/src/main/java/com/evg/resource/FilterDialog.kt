@@ -1,5 +1,6 @@
 package com.evg.resource
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -11,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -64,15 +66,21 @@ fun FilterDialog(
             Row(horizontalArrangement = Arrangement.spacedBy(buttonSpace)) {
                 Button(
                     onClick = onDismiss,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
-                    Text("Clear")
+                    Text(
+                        text = "Clear",
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 }
                 Button(
                     onClick = onApplyFilter,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Apply")
+                    Text(
+                        text = "Apply",
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 }
             }
         },
@@ -81,7 +89,8 @@ fun FilterDialog(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewFilterDialog() {
     RickAndMortyTheme {

@@ -3,9 +3,9 @@ package com.evg.resource.model.character
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import com.evg.resource.R
-import com.evg.resource.theme.Black
-import com.evg.resource.theme.Green
-import com.evg.resource.theme.Red
+import com.evg.resource.theme.UnknownBlack
+import com.evg.resource.theme.AliveGreen
+import com.evg.resource.theme.DeadRed
 
 data class CharacterUI(
     val id: Int,
@@ -27,15 +27,15 @@ enum class CharacterStatusUI(
     val naming: Int
 ) {
     ALIVE(
-        Green,
+        AliveGreen,
         R.string.alive
     ),
     DEAD(
-        Red,
+        DeadRed,
         R.string.dead
     ),
     UNKNOWN(
-        Black,
+        UnknownBlack,
         R.string.unknown
     )
 }

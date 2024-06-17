@@ -1,5 +1,6 @@
 package com.evg.characters.presentation
 
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -163,7 +164,8 @@ fun CharacterFilterDialog(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun CharacterFilterDialogPreview() {
     RickAndMortyTheme {
         CharacterFilterDialog(

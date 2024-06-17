@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,7 +47,10 @@ fun BottomBar(navController: NavHostController) {
         screens.forEach { screen ->
             NavigationBarItem(
                 label = {
-                    Text(text = screen.title)
+                    Text(
+                        text = screen.title,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 },
                 selected = currentDestination?.hierarchy?.any{
                     it.route == screen.route
@@ -57,7 +61,8 @@ fun BottomBar(navController: NavHostController) {
                 icon = {
                     Icon(
                         imageVector = screen.icon,
-                        contentDescription = screen.title
+                        contentDescription = screen.title,
+                        tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             )

@@ -1,5 +1,6 @@
 package com.evg.resource
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,23 +38,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.evg.resource.theme.BorderRadius
+import com.evg.resource.theme.IconSize
 import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
 fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (String) -> Unit) {
-    val cardHeight = 50.dp
-    //val textSize = 15.sp
-    val imageSize = 30.dp
     var textState by remember {
         mutableStateOf(TextFieldValue())
     }
 
     TextField(
         modifier = modifier
-            .height(cardHeight)
+            .height(IconSize)
             .background(color = Color.Transparent)
             .border(
-                BorderStroke(2.dp, Color.Black),
+                BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
                 shape = RoundedCornerShape(BorderRadius)
             ),
         value = textState,
@@ -75,7 +74,7 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (St
                     id = R.drawable.search,
                 ),
                 contentDescription = "Search",
-                modifier = Modifier.size(imageSize),
+                modifier = Modifier.size(30.dp),
             )
         },
         colors = TextFieldDefaults.colors(
@@ -89,7 +88,8 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (St
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SearchFieldPreview() {
     RickAndMortyTheme {

@@ -1,5 +1,6 @@
 package com.evg.locations
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +34,8 @@ fun LocationsScreen() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun HomeScreenPreview() {
     LocationsScreen()
 }

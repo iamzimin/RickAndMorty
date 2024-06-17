@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":features:characters"))
     implementation(project(":features:episodes"))
     implementation(project(":features:locations"))
+    implementation(project(":core:resource"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
