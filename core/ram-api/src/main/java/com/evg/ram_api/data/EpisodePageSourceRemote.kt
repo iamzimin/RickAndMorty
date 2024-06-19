@@ -4,26 +4,26 @@ import android.net.Uri
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.evg.ram_api.domain.Response
-import com.evg.ram_api.domain.models.CharacterFilterDTO
-import com.evg.ram_api.domain.models.CharacterResponse
+import com.evg.ram_api.domain.models.EpisodeFilterDTO
+import com.evg.ram_api.domain.models.EpisodeResponse
 import com.evg.ram_api.domain.repository.ApiRepository
 import javax.inject.Inject
 
-class CharacterPageSourceRemote @Inject constructor(
+class EpisodePageSourceRemote @Inject constructor(
     private val apiRepository: ApiRepository,
-): PagingSource<Int, CharacterResponse>() {
-    var filter = CharacterFilterDTO()
+): PagingSource<Int, EpisodeResponse>() {
+    var filter = EpisodeFilterDTO()
 
-    override fun getRefreshKey(state: PagingState<Int, CharacterResponse>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, EpisodeResponse>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val page = state.closestPageToPosition(anchorPosition) ?: return null
         return page.prevKey?.plus(1) ?: page.nextKey?.minus(1)
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeResponse> {
         val page = params.key ?: 1
 
-        when (val response = apiRepository.getAllCharactersByPage(page = page, filter = filter)) {
+        when (val response = apiRepository.getAllEpisodesByPage(page = page, filter = filter)) {
             is Response.Success -> {
                 val characters = response.data.results
                 val prevKey = getPage(response.data.info.prev)

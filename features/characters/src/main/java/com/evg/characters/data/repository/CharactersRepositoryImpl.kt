@@ -26,13 +26,12 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CharactersRepositoryImpl @Inject constructor(
-    private val context: Context,
     private val apiRepository: ApiRepository,
     private val characterPageSourceLocal: CharacterPageSourceLocal,
     private val characterPageSourceRemote: CharacterPageSourceRemote,
 ): CharactersRepository {
     override fun getAllCharacters(filter: CharacterFilter): Flow<PagingData<Character>> {
-        if (isInternetAvailable()) {
+        if (apiRepository.isInternetAvailable()) {
             return Pager(PagingConfig(
                 pageSize = 5,
             )) { characterPageSourceRemote.apply { this.filter = filter.toCharacterFilterDTO() } }.flow.map { pagingData ->
@@ -80,17 +79,6 @@ class CharactersRepositoryImpl @Inject constructor(
                     emit(null)
                 }
             }
-        }
-    }
-
-    private fun isInternetAvailable(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return when {
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            else -> false
         }
     }
 }

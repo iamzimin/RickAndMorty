@@ -3,10 +3,7 @@ package com.evg.characters.presentation
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,12 +27,12 @@ import androidx.paging.compose.itemKey
 import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
 import com.evg.resource.CharacterCard
+import com.evg.resource.FragmentHeader
 import com.evg.resource.theme.RickAndMortyTheme
 import com.evg.resource.R
 import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.IconSize
-import com.evg.resource.theme.VerticalSpacerPadding
 
 
 @Composable

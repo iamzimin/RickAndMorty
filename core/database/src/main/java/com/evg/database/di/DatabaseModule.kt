@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.evg.database.data.CharacterPageSourceLocal
 import com.evg.database.data.repository.DatabaseRepositoryImpl
 import com.evg.database.data.storage.CharacterDatabase
+import com.evg.database.data.storage.EpisodeDatabase
 import com.evg.database.domain.repository.DatabaseRepository
 import dagger.Module
 import dagger.Provides
@@ -28,9 +29,25 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseRepository(characterDatabase: CharacterDatabase): DatabaseRepository {
+    fun provideEpisodeDatabase(@ApplicationContext context: Context) : EpisodeDatabase {
+        return Room.databaseBuilder(
+            context,
+            EpisodeDatabase::class.java,
+            EpisodeDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabaseRepository(
+        characterDatabase: CharacterDatabase,
+        episodeDatabase: EpisodeDatabase,
+    ): DatabaseRepository {
         println("provided DatabaseRepositoryImpl")
-        return DatabaseRepositoryImpl(characterDatabase = characterDatabase)
+        return DatabaseRepositoryImpl(
+            characterDatabase = characterDatabase,
+            episodeDatabase = episodeDatabase,
+        )
     }
 
     @Provides

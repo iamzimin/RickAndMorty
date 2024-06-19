@@ -26,7 +26,6 @@ object CharactersModule {
     ): CharactersRepository {
         println("provided CharactersRepositoryImpl")
         return CharactersRepositoryImpl(
-            context = context,
             apiRepository = apiRepository,
             characterPageSourceLocal = characterPageSourceLocal,
             characterPageSourceRemote = characterPageSourceRemote,

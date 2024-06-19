@@ -14,12 +14,12 @@ import com.evg.database.domain.models.CharacterFilterDB
 import com.evg.database.domain.models.GenderTypeDB
 import com.evg.database.domain.models.StatusTypeDB
 import com.evg.ram_api.domain.models.CharacterFilterDTO
-import com.evg.ram_api.domain.models.CharactersResponse
+import com.evg.ram_api.domain.models.CharacterResponse
 import com.evg.ram_api.domain.models.EpisodeResponse
 import com.evg.ram_api.domain.models.GenderTypeDTO
 import com.evg.ram_api.domain.models.StatusTypeDTO
 
-internal fun CharactersResponse.toCharacter() : Character {
+internal fun CharacterResponse.toCharacter() : Character {
     return Character(
         id = this.id,
         name = this.name,

@@ -13,7 +13,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.evg.characters.presentation.CharacterScreen
 import com.evg.characters.presentation.CharactersScreen
-import com.evg.episodes.EpisodesScreen
+import com.evg.episodes.presentation.EpisodesScreen
 import com.evg.locations.LocationsScreen
 
 @Composable

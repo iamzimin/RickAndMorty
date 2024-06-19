@@ -3,7 +3,7 @@ package com.evg.ram_api.domain.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CharactersResponse(
+data class CharacterResponse(
     val id: Int,
     val name: String,
     val status: String,
