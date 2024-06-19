@@ -18,7 +18,7 @@ import javax.inject.Singleton
 object EpisodesModule {
     @Provides
     @Singleton
-    fun provideEpisodesRepository(
+    fun provideEpisodeRepository(
         @ApplicationContext context: Context,
         apiRepository: ApiRepository,
         episodesPageSourceLocal: EpisodePageSourceLocal,

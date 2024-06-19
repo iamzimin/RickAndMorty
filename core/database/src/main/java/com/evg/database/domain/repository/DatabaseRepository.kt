@@ -6,6 +6,8 @@ import com.evg.database.domain.models.CharacterDBO
 import com.evg.database.domain.models.CharacterFilterDB
 import com.evg.database.domain.models.EpisodeDBO
 import com.evg.database.domain.models.EpisodeFilterDB
+import com.evg.database.domain.models.LocationDBO
+import com.evg.database.domain.models.LocationFilterDB
 
 interface DatabaseRepository {
     //Characters
@@ -25,4 +27,13 @@ interface DatabaseRepository {
     ): List<EpisodeDBO>
     suspend fun insertEpisode(episode: EpisodeDBO)
     suspend fun insertEpisodes(episodes: List<EpisodeDBO>)
+
+    //Locations
+    fun getAllLocationsByPage(
+        pageSize: Int,
+        offset: Int,
+        filter: LocationFilterDB,
+    ): List<LocationDBO>
+    suspend fun insertLocation(location: LocationDBO)
+    suspend fun insertLocations(locations: List<LocationDBO>)
 }

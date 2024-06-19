@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt.plugin)
+    alias(libs.plugins.jetbrains.kotlin.ksp)
 }
 
 android {
@@ -38,6 +40,8 @@ android {
 
 dependencies {
     implementation(project(":core:resource"))
+    implementation(project(":core:ram-api"))
+    implementation(project(":core:database"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -47,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(project(":features:characters"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -54,4 +59,22 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dagger Hilt
+    implementation(libs.dagger.hilt)
+    ksp(libs.dagger.hilt.compiler)
+    implementation(libs.dagger.hilt.navigation)
+
+    // MVVM
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+    //implementation(libs.lifecycle.viewmodel.compose)
+
+    // Paging
+    implementation(libs.jetpack.paging.runtime)
+    implementation(libs.jetpack.paging.common)
+    implementation(libs.jetpack.paging.compose)
+
+    // Coil
+    implementation(libs.coil.compose)
 }

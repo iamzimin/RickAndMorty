@@ -14,7 +14,7 @@ import androidx.navigation.navDeepLink
 import com.evg.characters.presentation.CharacterScreen
 import com.evg.characters.presentation.CharactersScreen
 import com.evg.episodes.presentation.EpisodesScreen
-import com.evg.locations.LocationsScreen
+import com.evg.locations.presentation.LocationsScreen
 
 @Composable
 fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValues) {

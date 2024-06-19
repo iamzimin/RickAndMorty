@@ -8,10 +8,13 @@ import com.evg.ram_api.domain.KtorClient
 import com.evg.ram_api.domain.Response
 import com.evg.ram_api.domain.mapper.toCharacterDBO
 import com.evg.ram_api.domain.mapper.toEpisodeDBO
+import com.evg.ram_api.domain.mapper.toLocationDBO
 import com.evg.ram_api.domain.models.CharacterFilterDTO
 import com.evg.ram_api.domain.models.CharacterResponse
 import com.evg.ram_api.domain.models.EpisodeFilterDTO
 import com.evg.ram_api.domain.models.EpisodeResponse
+import com.evg.ram_api.domain.models.LocationFilterDTO
+import com.evg.ram_api.domain.models.LocationResponse
 import com.evg.ram_api.domain.models.PageResponse
 import com.evg.ram_api.domain.repository.ApiRepository
 import io.ktor.client.call.body
@@ -63,8 +66,8 @@ class ApiRepositoryImpl @Inject constructor(
 
         return ktor.executeApiSafe {
             if (listIds.size == 1) {
-                val singleEpisode = ktor.client.get(url).body<CharacterResponse>()
-                listOf(singleEpisode)
+                val singleCharacter = ktor.client.get(url).body<CharacterResponse>()
+                listOf(singleCharacter)
             } else {
                 ktor.client.get(url).body<List<CharacterResponse>>()
             }
@@ -114,6 +117,53 @@ class ApiRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    //Characters
+    override suspend fun getAllLocationsByPage(
+        page: Int,
+        filter: LocationFilterDTO
+    ): Response<PageResponse<LocationResponse>> {
+        val url = URLBuilder().takeFrom(ktor.mainURL).apply {
+            path("location")
+            parameters.append("page", page.toString())
+            filter.name?.let { parameters.append("name", it) }
+            filter.type?.let { parameters.append("type", it) }
+            filter.dimension?.let { parameters.append("dimension", it) }
+        }.buildString()
+
+        val response = ktor.executeApiSafe {
+            ktor.client.get(url).body<PageResponse<LocationResponse>>()
+        }
+        if (response is Response.Success) {
+            databaseRepository.insertLocations(
+                locations = response.data.results.map { it.toLocationDBO() }
+            )
+        }
+        return response
+    }
+
+    override suspend fun getLocationById(id: Int): Response<LocationResponse> {
+        val url = "${ktor.mainURL}/location/$id"
+        val response = ktor.executeApiSafe {
+            ktor.client.get(url).body<LocationResponse>()
+        }
+        return response
+    }
+
+    override suspend fun getLocationsList(listIds: List<Int>): Response<List<LocationResponse>> {
+        val idParams = listIds.joinToString(",")
+        val url = "${ktor.mainURL}/location/$idParams"
+
+        return ktor.executeApiSafe {
+            if (listIds.size == 1) {
+                val singleLocation = ktor.client.get(url).body<LocationResponse>()
+                listOf(singleLocation)
+            } else {
+                ktor.client.get(url).body<List<LocationResponse>>()
+            }
+        }
+    }
+
 
     override fun isInternetAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

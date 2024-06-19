@@ -2,17 +2,22 @@ package com.evg.database.data.repository
 
 import com.evg.database.data.storage.CharacterDatabase
 import com.evg.database.data.storage.EpisodeDatabase
+import com.evg.database.data.storage.LocationDatabase
 import com.evg.database.domain.models.CharacterDBO
 import com.evg.database.domain.models.CharacterFilterDB
 import com.evg.database.domain.repository.DatabaseRepository
 import com.evg.database.domain.mapper.toStringDB
 import com.evg.database.domain.models.EpisodeDBO
 import com.evg.database.domain.models.EpisodeFilterDB
+import com.evg.database.domain.models.LocationDBO
+import com.evg.database.domain.models.LocationFilterDB
 
 class DatabaseRepositoryImpl(
     private val characterDatabase: CharacterDatabase,
     private val episodeDatabase: EpisodeDatabase,
+    private val locationDatabase: LocationDatabase,
 ): DatabaseRepository {
+    //Characters
     override fun getAllCharactersByPage(
         pageSize: Int,
         offset: Int,
@@ -37,6 +42,7 @@ class DatabaseRepositoryImpl(
         characterDatabase.characterDao.insertCharacters(characters = characters)
     }
 
+    //Episodes
     override fun getAllEpisodesByPage(
         pageSize: Int,
         offset: Int,
@@ -55,5 +61,26 @@ class DatabaseRepositoryImpl(
 
     override suspend fun insertEpisodes(episodes: List<EpisodeDBO>) {
         episodeDatabase.episodeDao.insertEpisodes(episodes = episodes)
+    }
+
+    //Locations
+    override fun getAllLocationsByPage(
+        pageSize: Int,
+        offset: Int,
+        filter: LocationFilterDB
+    ): List<LocationDBO> {
+        return locationDatabase.locationDao.getAllLocationsByPage(
+            pageSize = pageSize,
+            offset = offset,
+            name = filter.name,
+        )
+    }
+
+    override suspend fun insertLocation(location: LocationDBO) {
+        locationDatabase.locationDao.insertLocation(location = location)
+    }
+
+    override suspend fun insertLocations(locations: List<LocationDBO>) {
+        locationDatabase.locationDao.insertLocations(locations = locations)
     }
 }

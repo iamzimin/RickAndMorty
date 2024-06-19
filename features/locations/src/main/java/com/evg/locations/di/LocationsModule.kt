@@ -1,10 +1,12 @@
-package com.evg.characters.di
+package com.evg.locations.di
 
 import android.content.Context
-import com.evg.characters.data.repository.CharactersRepositoryImpl
-import com.evg.characters.domain.repository.CharactersRepository
 import com.evg.database.data.CharacterPageSourceLocal
+import com.evg.database.data.LocationPageSourceLocal
+import com.evg.locations.data.repository.LocationRepositoryImpl
+import com.evg.locations.domain.repository.LocationRepository
 import com.evg.ram_api.data.CharacterPageSourceRemote
+import com.evg.ram_api.data.LocationPageSourceRemote
 import com.evg.ram_api.domain.repository.ApiRepository
 import dagger.Module
 import dagger.Provides
@@ -15,20 +17,20 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CharactersModule {
+object LocationsModule {
     @Provides
     @Singleton
-    fun provideCharacterRepository(
+    fun provideLocationRepository(
         @ApplicationContext context: Context,
         apiRepository: ApiRepository,
-        characterPageSourceLocal: CharacterPageSourceLocal,
-        characterPageSourceRemote: CharacterPageSourceRemote,
-    ): CharactersRepository {
+        locationPageSourceLocal: LocationPageSourceLocal,
+        locationPageSourceRemote: LocationPageSourceRemote,
+    ): LocationRepository {
         println("provided CharactersRepositoryImpl")
-        return CharactersRepositoryImpl(
+        return LocationRepositoryImpl(
             apiRepository = apiRepository,
-            characterPageSourceLocal = characterPageSourceLocal,
-            characterPageSourceRemote = characterPageSourceRemote,
+            locationPageSourceLocal = locationPageSourceLocal,
+            locationPageSourceRemote = locationPageSourceRemote,
         )
     }
 }

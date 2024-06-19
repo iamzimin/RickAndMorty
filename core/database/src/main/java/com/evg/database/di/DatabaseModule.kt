@@ -6,6 +6,7 @@ import com.evg.database.data.CharacterPageSourceLocal
 import com.evg.database.data.repository.DatabaseRepositoryImpl
 import com.evg.database.data.storage.CharacterDatabase
 import com.evg.database.data.storage.EpisodeDatabase
+import com.evg.database.data.storage.LocationDatabase
 import com.evg.database.domain.repository.DatabaseRepository
 import dagger.Module
 import dagger.Provides
@@ -39,14 +40,26 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideLocationDatabase(@ApplicationContext context: Context) : LocationDatabase {
+        return Room.databaseBuilder(
+            context,
+            LocationDatabase::class.java,
+            LocationDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
     fun provideDatabaseRepository(
         characterDatabase: CharacterDatabase,
         episodeDatabase: EpisodeDatabase,
+        locationDatabase: LocationDatabase,
     ): DatabaseRepository {
         println("provided DatabaseRepositoryImpl")
         return DatabaseRepositoryImpl(
             characterDatabase = characterDatabase,
             episodeDatabase = episodeDatabase,
+            locationDatabase = locationDatabase,
         )
     }
 
