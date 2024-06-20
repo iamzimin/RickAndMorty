@@ -1,15 +1,16 @@
 package com.evg.locations.data.repository
 
-import com.evg.locations.domain.model.Character
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.evg.database.data.LocationPageSourceLocal
+import com.evg.database.domain.repository.DatabaseRepository
 import com.evg.locations.domain.mapper.toCharacter
 import com.evg.locations.domain.mapper.toLocation
 import com.evg.locations.domain.mapper.toLocationFilterDB
 import com.evg.locations.domain.mapper.toLocationFilterDTO
+import com.evg.locations.domain.model.Character
 import com.evg.locations.domain.model.Location
 import com.evg.locations.domain.model.LocationFilter
 import com.evg.locations.domain.repository.LocationRepository
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
     private val apiRepository: ApiRepository,
+    private val databaseRepository: DatabaseRepository,
     private val locationPageSourceLocal: LocationPageSourceLocal,
     private val locationPageSourceRemote: LocationPageSourceRemote,
 ): LocationRepository {
@@ -58,7 +60,8 @@ class LocationRepositoryImpl @Inject constructor(
                     emit(response.data.toLocation())
                 }
                 is Response.Failure -> {
-                    emit(null)
+                    val data = databaseRepository.getLocationById(id = id)?.toLocation()
+                    emit(data)
                 }
             }
         }

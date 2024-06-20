@@ -26,4 +26,7 @@ interface LocationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLocations(locations: List<LocationDBO>)
+
+    @Query("SELECT * FROM locationdbo WHERE id = :id")
+    suspend fun getLocationById(id: Int): LocationDBO?
 }

@@ -31,7 +31,7 @@ import com.evg.resource.theme.RickAndMortyTheme
 @Composable
 fun LocationInfo(
     locationUI: LocationUI,
-    charactersUI: List<CharacterUI>,
+    charactersUI: List<CharacterUI>?,
 ) {
     Column {
         Row {
@@ -58,11 +58,12 @@ fun LocationInfo(
                     }
                 }
 
-                items(charactersUI) { character ->
-                    CharacterCard(characterUI = character)
+                charactersUI?.let { characters ->
+                    items(characters) { character ->
+                        CharacterCard(characterUI = character)
+                    }
                 }
             }
-
         }
     }
 }

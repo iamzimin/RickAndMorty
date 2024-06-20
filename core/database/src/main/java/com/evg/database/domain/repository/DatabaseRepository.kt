@@ -18,6 +18,7 @@ interface DatabaseRepository {
     ): List<CharacterDBO>
     suspend fun insertCharacter(character: CharacterDBO)
     suspend fun insertCharacters(characters: List<CharacterDBO>)
+    suspend fun getCharacterById(id: Int): CharacterDBO?
 
     //Episodes
     fun getAllEpisodesByPage(
@@ -27,6 +28,7 @@ interface DatabaseRepository {
     ): List<EpisodeDBO>
     suspend fun insertEpisode(episode: EpisodeDBO)
     suspend fun insertEpisodes(episodes: List<EpisodeDBO>)
+    suspend fun getEpisodeById(id: Int): EpisodeDBO?
 
     //Locations
     fun getAllLocationsByPage(
@@ -36,4 +38,5 @@ interface DatabaseRepository {
     ): List<LocationDBO>
     suspend fun insertLocation(location: LocationDBO)
     suspend fun insertLocations(locations: List<LocationDBO>)
+    suspend fun getLocationById(id: Int): LocationDBO?
 }

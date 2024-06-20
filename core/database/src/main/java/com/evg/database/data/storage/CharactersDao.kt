@@ -33,4 +33,7 @@ interface CharactersDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacters(characters: List<CharacterDBO>)
+
+    @Query("SELECT * FROM characterdbo WHERE id = :id")
+    suspend fun getCharacterById(id: Int): CharacterDBO?
 }

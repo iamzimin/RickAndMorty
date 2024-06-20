@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.evg.database.data.EpisodePageSourceLocal
+import com.evg.database.domain.repository.DatabaseRepository
 import com.evg.episodes.domain.mapper.toCharacter
 import com.evg.episodes.domain.mapper.toEpisode
 import com.evg.episodes.domain.mapper.toEpisodeFilterDB
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 class EpisodesRepositoryImpl @Inject constructor(
     private val apiRepository: ApiRepository,
+    private val databaseRepository: DatabaseRepository,
     private val episodesPageSourceLocal: EpisodePageSourceLocal,
     private val episodesPageSourceRemote: EpisodePageSourceRemote,
 ): EpisodesRepository {
@@ -58,7 +60,8 @@ class EpisodesRepositoryImpl @Inject constructor(
                     emit(response.data.toEpisode())
                 }
                 is Response.Failure -> {
-                    emit(null)
+                    val data = databaseRepository.getEpisodeById(id = id)?.toEpisode()
+                    emit(data)
                 }
             }
         }

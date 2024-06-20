@@ -45,7 +45,7 @@ import com.evg.resource.theme.VerticalSpacerPadding
 @Composable
 fun EpisodeInfo(
     episodeUI: EpisodeUI,
-    charactersUI: List<CharacterUI>,
+    charactersUI: List<CharacterUI>?,
 ) {
     Column {
         Row {
@@ -72,11 +72,12 @@ fun EpisodeInfo(
                     }
                 }
 
-                items(charactersUI) { character ->
-                    CharacterCard(characterUI = character)
+                charactersUI?.let { characters ->
+                    items(characters) { character ->
+                        CharacterCard(characterUI = character)
+                    }
                 }
             }
-
         }
     }
 }

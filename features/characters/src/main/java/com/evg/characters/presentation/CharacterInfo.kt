@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.evg.resource.CharacterCard
 import com.evg.resource.EpisodeCard
 import com.evg.resource.InfoCard
 import com.evg.resource.model.character.CharacterGenderUI
@@ -44,7 +45,7 @@ import com.evg.resource.theme.VerticalSpacerPadding
 @Composable
 fun CharacterInfo(
     characterUI: CharacterUI,
-    episodesUI: List<EpisodeUI>,
+    episodesUI: List<EpisodeUI>?,
 ) {
     Column {
         Row {
@@ -130,12 +131,13 @@ fun CharacterInfo(
                     )
                 }
 
-                items(episodesUI) { episode ->
-                    EpisodeCard(episode)
+                episodesUI?.let { episodes ->
+                    items(episodes) { episode ->
+                        EpisodeCard(episodeUI = episode)
+                    }
                 }
             }
         }
-
     }
 }
 

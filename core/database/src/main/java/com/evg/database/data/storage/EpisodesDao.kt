@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.evg.database.domain.models.CharacterDBO
 import com.evg.database.domain.models.EpisodeDBO
 
 @Dao
@@ -25,4 +26,7 @@ interface EpisodesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEpisodes(episodes: List<EpisodeDBO>)
+
+    @Query("SELECT * FROM episodedbo WHERE id = :id")
+    suspend fun getEpisodeById(id: Int): EpisodeDBO?
 }

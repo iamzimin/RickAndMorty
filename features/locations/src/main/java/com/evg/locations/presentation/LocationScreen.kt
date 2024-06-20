@@ -43,12 +43,10 @@ fun LocationScreen(
             )
         } else {
             locationInfo?.let { info ->
-                locationCharacters?.let { characters ->
-                    LocationInfo(
-                        locationUI = info.toLocationUI(),
-                        charactersUI = characters.map { it.toCharacterUI() }
-                    )
-                }
+                LocationInfo(
+                    locationUI = info.toLocationUI(),
+                    charactersUI = locationCharacters?.map { it.toCharacterUI() }
+                )
             }
         }
     }

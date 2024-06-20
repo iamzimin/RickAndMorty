@@ -46,12 +46,10 @@ fun CharacterScreen(
             )
         } else {
             characterInfo?.let { info ->
-                characterEpisodes?.let { episodes ->
-                    CharacterInfo(
-                        characterUI = info.toCharacterUI(),
-                        episodesUI = episodes.map { it.toEpisodeUI() }
-                    )
-                }
+                CharacterInfo(
+                    characterUI = info.toCharacterUI(),
+                    episodesUI = characterEpisodes?.map { it.toEpisodeUI() }
+                )
             }
         }
     }

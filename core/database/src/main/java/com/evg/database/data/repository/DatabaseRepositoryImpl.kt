@@ -42,6 +42,10 @@ class DatabaseRepositoryImpl(
         characterDatabase.characterDao.insertCharacters(characters = characters)
     }
 
+    override suspend fun getCharacterById(id: Int): CharacterDBO? {
+        return characterDatabase.characterDao.getCharacterById(id = id)
+    }
+
     //Episodes
     override fun getAllEpisodesByPage(
         pageSize: Int,
@@ -63,6 +67,10 @@ class DatabaseRepositoryImpl(
         episodeDatabase.episodeDao.insertEpisodes(episodes = episodes)
     }
 
+    override suspend fun getEpisodeById(id: Int): EpisodeDBO? {
+        return episodeDatabase.episodeDao.getEpisodeById(id = id)
+    }
+
     //Locations
     override fun getAllLocationsByPage(
         pageSize: Int,
@@ -82,5 +90,9 @@ class DatabaseRepositoryImpl(
 
     override suspend fun insertLocations(locations: List<LocationDBO>) {
         locationDatabase.locationDao.insertLocations(locations = locations)
+    }
+
+    override suspend fun getLocationById(id: Int): LocationDBO? {
+        return locationDatabase.locationDao.getLocationById(id = id)
     }
 }

@@ -2,6 +2,7 @@ package com.evg.episodes.di
 
 import android.content.Context
 import com.evg.database.data.EpisodePageSourceLocal
+import com.evg.database.domain.repository.DatabaseRepository
 import com.evg.episodes.data.repository.EpisodesRepositoryImpl
 import com.evg.episodes.domain.repository.EpisodesRepository
 import com.evg.ram_api.data.EpisodePageSourceRemote
@@ -19,14 +20,15 @@ object EpisodesModule {
     @Provides
     @Singleton
     fun provideEpisodeRepository(
-        @ApplicationContext context: Context,
         apiRepository: ApiRepository,
+        databaseRepository: DatabaseRepository,
         episodesPageSourceLocal: EpisodePageSourceLocal,
         episodesPageSourceRemote: EpisodePageSourceRemote,
     ): EpisodesRepository {
         println("provided CharactersRepositoryImpl")
         return EpisodesRepositoryImpl(
             apiRepository = apiRepository,
+            databaseRepository = databaseRepository,
             episodesPageSourceLocal = episodesPageSourceLocal,
             episodesPageSourceRemote = episodesPageSourceRemote,
         )
