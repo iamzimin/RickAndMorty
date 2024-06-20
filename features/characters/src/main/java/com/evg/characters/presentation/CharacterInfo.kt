@@ -1,14 +1,9 @@
 package com.evg.characters.presentation
 
-import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,17 +23,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.evg.resource.EpisodeCard
+import com.evg.resource.InfoCard
 import com.evg.resource.model.character.CharacterGenderUI
 import com.evg.resource.model.character.CharacterLocationUI
 import com.evg.resource.model.character.CharacterOriginUI
@@ -145,69 +136,6 @@ fun CharacterInfo(
             }
         }
 
-    }
-}
-
-@Composable
-private fun InfoCard(
-    header: String,
-    content: String,
-    modifier: Modifier,
-    isClickable: Boolean = false,
-    link: String = "",
-) {
-    val context = LocalContext.current
-
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(BorderRadius))
-            .then(
-                if (isClickable && link.isNotEmpty()) {
-                    Modifier.clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                        context.startActivity(intent)
-                    }
-                } else {
-                    Modifier
-                }
-            )
-            //.background(Color.Red),
-    ) {
-        Column {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .padding(5.dp)
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = header,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.weight(1f))
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(10.dp)
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = content,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.weight(1f))
-            }
-        }
     }
 }
 

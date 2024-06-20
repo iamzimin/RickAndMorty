@@ -38,7 +38,6 @@ import com.evg.resource.theme.RickAndMortyTheme
 @Composable
 fun EpisodeCard(
     episodeUI: EpisodeUI,
-
 ) {
     val context = LocalContext.current
     val cardHeight = 120.dp

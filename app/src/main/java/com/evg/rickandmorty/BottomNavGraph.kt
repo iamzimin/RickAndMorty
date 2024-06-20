@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.evg.characters.presentation.CharacterScreen
 import com.evg.characters.presentation.CharactersScreen
+import com.evg.episodes.presentation.EpisodeScreen
 import com.evg.episodes.presentation.EpisodesScreen
 import com.evg.locations.presentation.LocationsScreen
 
@@ -49,6 +50,24 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
         ) { entry ->
             val id = entry.arguments?.getInt("id") ?: -1 //TODO
             CharacterScreen(characterId = id)
+        }
+        composable(
+            route = "episode/{id}",
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "https://rickandmortyapi.com/api/episode/{id}"
+                    action = Intent.ACTION_VIEW
+                },
+            ),
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) { entry ->
+            val id = entry.arguments?.getInt("id") ?: -1 //TODO
+            EpisodeScreen(episodeId = id)
         }
     }
 }
