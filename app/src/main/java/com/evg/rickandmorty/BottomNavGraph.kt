@@ -15,6 +15,7 @@ import com.evg.characters.presentation.CharacterScreen
 import com.evg.characters.presentation.CharactersScreen
 import com.evg.episodes.presentation.EpisodeScreen
 import com.evg.episodes.presentation.EpisodesScreen
+import com.evg.locations.presentation.LocationScreen
 import com.evg.locations.presentation.LocationsScreen
 
 @Composable
@@ -24,6 +25,7 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
         startDestination = BottomBarScreen.Characters.route,
         modifier = Modifier.padding(paddingValues)
     ) {
+        //Navigation
         composable(route = BottomBarScreen.Episodes.route) {
             EpisodesScreen()
         }
@@ -33,6 +35,8 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
         composable(route = BottomBarScreen.Locations.route) {
             LocationsScreen()
         }
+
+        //Deep links
         composable(
             route = "character/{id}",
             deepLinks = listOf(
@@ -68,6 +72,24 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
         ) { entry ->
             val id = entry.arguments?.getInt("id") ?: -1 //TODO
             EpisodeScreen(episodeId = id)
+        }
+        composable(
+            route = "location/{id}",
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "https://rickandmortyapi.com/api/location/{id}"
+                    action = Intent.ACTION_VIEW
+                },
+            ),
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) { entry ->
+            val id = entry.arguments?.getInt("id") ?: -1 //TODO
+            LocationScreen(locationId = id)
         }
     }
 }
