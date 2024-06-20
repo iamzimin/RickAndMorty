@@ -55,41 +55,6 @@ fun LocationsScreen(
             onSearchTextChanged = { newName ->
                 viewModel.setNameFilter(name = newName)
             },
-            filterButton = {
-                IconButton(
-                    onClick = {
-                        isShowDialog = true
-                    },
-                    modifier = Modifier
-                        .size(IconSize)
-                        .border(
-                            BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
-                            shape = RoundedCornerShape(BorderRadius),
-                        )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.filter),
-                        tint = MaterialTheme.colorScheme.inverseSurface,
-                        contentDescription = "Filter",
-                        modifier = Modifier.size(35.dp)
-                    )
-                }
-                /*if (isShowDialog) {
-                    CharacterFilterDialog(
-                        hideDialog = { isShowDialog = false },
-                        onGenderChange = {
-                            viewModel.setCharacterGender(it)
-                        },
-                        onSpeciesChange = {
-                            viewModel.setCharacterSpecies(it)
-                        },
-                        onStatusChange = {
-                            viewModel.setCharacterStatus(it)
-                        },
-                        viewModel = viewModel,
-                    )
-                }*/
-            }
         )
         LazyColumn {
             items(

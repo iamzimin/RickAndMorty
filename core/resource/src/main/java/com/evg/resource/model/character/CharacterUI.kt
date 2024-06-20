@@ -1,11 +1,16 @@
 package com.evg.resource.model.character
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.evg.resource.R
-import com.evg.resource.theme.UnknownBlack
-import com.evg.resource.theme.AliveGreen
-import com.evg.resource.theme.DeadRed
+import com.evg.resource.theme.AliveGreenDark
+import com.evg.resource.theme.AliveGreenLight
+import com.evg.resource.theme.DeadRedDark
+import com.evg.resource.theme.DeadRedLight
+import com.evg.resource.theme.UnknownBlackDark
+import com.evg.resource.theme.UnknownBlackLight
 
 data class CharacterUI(
     val id: Int,
@@ -22,22 +27,27 @@ data class CharacterUI(
 )
 
 enum class CharacterStatusUI(
-    val color: Color,
     @StringRes
     val naming: Int
 ) {
     ALIVE(
-        AliveGreen,
         R.string.alive
     ),
     DEAD(
-        DeadRed,
         R.string.dead
     ),
     UNKNOWN(
-        UnknownBlack,
         R.string.unknown
     )
+}
+
+@Composable
+fun CharacterStatusUI.color(): Color {
+    return when (this) {
+        CharacterStatusUI.ALIVE -> if (isSystemInDarkTheme()) AliveGreenDark else AliveGreenLight
+        CharacterStatusUI.DEAD -> if (isSystemInDarkTheme()) DeadRedDark else DeadRedLight
+        CharacterStatusUI.UNKNOWN -> if (isSystemInDarkTheme()) UnknownBlackDark else UnknownBlackLight
+    }
 }
 
 enum class CharacterGenderUI(

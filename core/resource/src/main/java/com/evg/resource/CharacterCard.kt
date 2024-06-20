@@ -4,7 +4,9 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,6 +46,7 @@ import com.evg.resource.model.character.CharacterLocationUI
 import com.evg.resource.model.character.CharacterOriginUI
 import com.evg.resource.model.character.CharacterStatusUI
 import com.evg.resource.model.character.CharacterUI
+import com.evg.resource.model.character.color
 import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.RickAndMortyTheme
 import kotlin.coroutines.coroutineContext
@@ -100,7 +103,14 @@ fun CharacterCard(
                             modifier = Modifier
                                 .size(7.dp)
                                 .clip(CircleShape)
-                                .background(characterUI.status.color)
+                                .background(characterUI.status.color())
+                                /*.border(
+                                    border = BorderStroke(
+                                        width = 0.5.dp,
+                                        color = MaterialTheme.colorScheme.outline
+                                    ),
+                                    shape = CircleShape
+                                )*/
                                 .align(Alignment.CenterVertically)
                         )
                         Text(

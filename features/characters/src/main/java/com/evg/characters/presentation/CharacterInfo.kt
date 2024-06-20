@@ -3,7 +3,9 @@ package com.evg.characters.presentation
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,11 +27,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.evg.characters.R
 import com.evg.resource.CharacterCard
 import com.evg.resource.EpisodeCard
 import com.evg.resource.InfoCard
@@ -37,6 +46,7 @@ import com.evg.resource.model.character.CharacterOriginUI
 import com.evg.resource.model.character.CharacterStatusUI
 import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.model.character.EpisodeUI
+import com.evg.resource.model.character.color
 import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.RickAndMortyTheme
 import com.evg.resource.theme.VerticalSpacerPadding
@@ -48,7 +58,10 @@ fun CharacterInfo(
     episodesUI: List<EpisodeUI>?,
 ) {
     Column {
-        Row {
+        Row(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+        ) {
             Text(
                 text = characterUI.name,
                 style = MaterialTheme.typography.titleLarge,
@@ -65,28 +78,62 @@ fun CharacterInfo(
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        //Row {
-                        Text(
-                            text = stringResource(id = characterUI.status.naming),
+                        Box(
                             modifier = Modifier
-                                .border(
-                                    width = 2.dp,
-                                    color = characterUI.status.color,
-                                    shape = CircleShape
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(BorderRadius))
+                                .align(alignment = Alignment.CenterHorizontally)
+                        ) {
+                            SubcomposeAsyncImage(
+                                model = characterUI.image,
+                                modifier = Modifier
+                                    .fillParentMaxWidth()
+                                    .clip(shape = RoundedCornerShape(BorderRadius))
+                                /*.align(alignment = Alignment.CenterHorizontally)*/,
+                                contentDescription = characterUI.image,
+                                contentScale = ContentScale.FillWidth,
+                                loading = {
+                                    /*Box(modifier = Modifier.fillMaxSize()) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.align(Alignment.Center)
+                                        )
+                                    }*/
+                                },
+                                error = {
+                                    /*Box(modifier = Modifier.fillMaxSize()) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.align(Alignment.Center)
+                                        )
+                                    }*/
+                                }
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .clip(shape = RoundedCornerShape(topStart = BorderRadius))
+                                    .background(characterUI.status.color())
+                                    .align(Alignment.BottomEnd)
+                            ) {
+                                /*Box(
+                                    modifier = Modifier
+                                        .padding(start = 10.dp)
+                                        .size(7.dp)
+                                        .clip(CircleShape)
+                                        .background(characterUI.status.color)
+                                        .align(Alignment.CenterVertically)
+                                )*/
+                                Text(
+                                    text = stringResource(id = characterUI.status.naming),
+                                    modifier = Modifier
+                                        /*.border(
+                                            width = 2.dp,
+                                            color = characterUI.status.color,
+                                            shape = CircleShape
+                                        )*/
+                                        .padding(7.dp)
                                 )
-                                .padding(7.dp)
-                        )
-                        //}
-                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
-                        AsyncImage(
-                            model = characterUI.image,
-                            modifier = Modifier
-                                .fillParentMaxWidth()
-                                .clip(shape = RoundedCornerShape(BorderRadius))
-                                .align(alignment = Alignment.CenterHorizontally),
-                            contentDescription = characterUI.image,
-                            contentScale = ContentScale.FillWidth,
-                        )
+                            }
+
+                        }
 
                         Spacer(modifier = Modifier.height(VerticalSpacerPadding))
 

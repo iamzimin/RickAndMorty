@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,20 +28,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.evg.resource.model.character.EpisodeUI
 import com.evg.resource.theme.BorderRadius
+import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.RickAndMortyTheme
+import com.evg.resource.theme.VerticalSpacerPadding
 
 @Composable
 fun EpisodeCard(
     episodeUI: EpisodeUI,
 ) {
     val context = LocalContext.current
-    val cardHeight = 120.dp
+    val cardHeight = 130.dp
     Card(
         shape = RoundedCornerShape(BorderRadius),
         modifier = Modifier
@@ -57,23 +62,70 @@ fun EpisodeCard(
             },
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(horizontal = EdgesMargin),
+            verticalArrangement = Arrangement.SpaceAround,
         ) {
-            Text(text = episodeUI.name)
+            Text(
+                text = episodeUI.name,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+
             Row {
-                Text(text = "Season: ")
-                Text(text = episodeUI.episode.first.toString())
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "Episode: ")
-                Text(text = episodeUI.episode.second.toString())
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Season: ",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray,
+                    )
+
+                    Text(
+                        text = episodeUI.episode.first.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier
+                            /*.align(Alignment.CenterHorizontally)*/,
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(VerticalSpacerPadding))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Episode: ",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray,
+                    )
+
+                    Text(
+                        text = episodeUI.episode.second.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier
+                            /*.align(Alignment.CenterHorizontally)*/,
+                    )
+                }
+
             }
-            Row {
-                Text(text = "Characters in episode: ")
-                Text(text = episodeUI.characters.size.toString())
-            }
-            Row {
-                Text(text = "Air date: ")
-                Text(text = episodeUI.air_date)
+
+            Column {
+                Text(
+                    text = "Air date:",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray,
+                )
+
+                Text(
+                    text = episodeUI.air_date,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }

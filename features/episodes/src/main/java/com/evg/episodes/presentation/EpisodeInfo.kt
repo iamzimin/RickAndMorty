@@ -48,7 +48,10 @@ fun EpisodeInfo(
     charactersUI: List<CharacterUI>?,
 ) {
     Column {
-        Row {
+        Row(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+        ) {
             Text(
                 text = episodeUI.name,
                 style = MaterialTheme.typography.titleLarge,
@@ -65,6 +68,33 @@ fun EpisodeInfo(
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        Row {
+                            InfoCard(
+                                header = "Season: ",
+                                content = episodeUI.episode.first.toString(),
+                                modifier = Modifier.weight(1f),
+                            )
+                            Spacer(modifier = Modifier.width(VerticalSpacerPadding))
+
+                            InfoCard(
+                                header = "Episode: ",
+                                content = episodeUI.episode.second.toString(),
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
+
+                        Row {
+                            InfoCard(
+                                header = "Air date: ",
+                                content = episodeUI.air_date,
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(VerticalSpacerPadding))
+
                         Text(
                             text = "Characters",
                             style = MaterialTheme.typography.titleLarge,
