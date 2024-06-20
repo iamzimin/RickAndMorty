@@ -44,11 +44,13 @@ class ApiRepositoryImpl @Inject constructor(
         val response = ktor.executeApiSafe {
             ktor.client.get(url).body<PageResponse<CharacterResponse>>()
         }
+
         if (response is Response.Success) {
             databaseRepository.insertCharacters(
                 characters = response.data.results.map { it.toCharacterDBO() }
             )
         }
+
         return response
     }
 
@@ -57,6 +59,13 @@ class ApiRepositoryImpl @Inject constructor(
         val response = ktor.executeApiSafe {
             ktor.client.get(url).body<CharacterResponse>()
         }
+
+        if (response is Response.Success) {
+            databaseRepository.insertCharacter(
+                character = response.data.toCharacterDBO()
+            )
+        }
+
         return response
     }
 
@@ -64,7 +73,7 @@ class ApiRepositoryImpl @Inject constructor(
         val idParams = listIds.joinToString(",")
         val url = "${ktor.mainURL}/character/$idParams"
 
-        return ktor.executeApiSafe {
+        val response = ktor.executeApiSafe {
             if (listIds.size == 1) {
                 val singleCharacter = ktor.client.get(url).body<CharacterResponse>()
                 listOf(singleCharacter)
@@ -72,6 +81,14 @@ class ApiRepositoryImpl @Inject constructor(
                 ktor.client.get(url).body<List<CharacterResponse>>()
             }
         }
+
+        if (response is Response.Success) {
+            databaseRepository.insertCharacters(
+                characters = response.data.map { it.toCharacterDBO() }
+            )
+        }
+
+        return response
     }
 
     //Episodes
@@ -101,6 +118,13 @@ class ApiRepositoryImpl @Inject constructor(
         val response = ktor.executeApiSafe {
             ktor.client.get(url).body<EpisodeResponse>()
         }
+
+        if (response is Response.Success) {
+            databaseRepository.insertEpisode(
+                episode = response.data.toEpisodeDBO()
+            )
+        }
+
         return response
     }
 
@@ -108,7 +132,7 @@ class ApiRepositoryImpl @Inject constructor(
         val idParams = listIds.joinToString(",")
         val url = "${ktor.mainURL}/episode/$idParams"
 
-        return ktor.executeApiSafe {
+        val response = ktor.executeApiSafe {
             if (listIds.size == 1) {
                 val singleEpisode = ktor.client.get(url).body<EpisodeResponse>()
                 listOf(singleEpisode)
@@ -116,6 +140,14 @@ class ApiRepositoryImpl @Inject constructor(
                 ktor.client.get(url).body<List<EpisodeResponse>>()
             }
         }
+
+        if (response is Response.Success) {
+            databaseRepository.insertEpisodes(
+                episodes = response.data.map { it.toEpisodeDBO() }
+            )
+        }
+
+        return response
     }
 
     //Characters
@@ -134,11 +166,13 @@ class ApiRepositoryImpl @Inject constructor(
         val response = ktor.executeApiSafe {
             ktor.client.get(url).body<PageResponse<LocationResponse>>()
         }
+
         if (response is Response.Success) {
             databaseRepository.insertLocations(
                 locations = response.data.results.map { it.toLocationDBO() }
             )
         }
+
         return response
     }
 
@@ -147,6 +181,13 @@ class ApiRepositoryImpl @Inject constructor(
         val response = ktor.executeApiSafe {
             ktor.client.get(url).body<LocationResponse>()
         }
+
+        if (response is Response.Success) {
+            databaseRepository.insertLocation(
+                location = response.data.toLocationDBO()
+            )
+        }
+
         return response
     }
 
@@ -154,7 +195,7 @@ class ApiRepositoryImpl @Inject constructor(
         val idParams = listIds.joinToString(",")
         val url = "${ktor.mainURL}/location/$idParams"
 
-        return ktor.executeApiSafe {
+        val response = ktor.executeApiSafe {
             if (listIds.size == 1) {
                 val singleLocation = ktor.client.get(url).body<LocationResponse>()
                 listOf(singleLocation)
@@ -162,6 +203,14 @@ class ApiRepositoryImpl @Inject constructor(
                 ktor.client.get(url).body<List<LocationResponse>>()
             }
         }
+
+        if (response is Response.Success) {
+            databaseRepository.insertLocations(
+                locations = response.data.map { it.toLocationDBO() }
+            )
+        }
+
+        return response
     }
 
 
