@@ -57,4 +57,7 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Shimmer
+    implementation(libs.shimmer.compose)
 }

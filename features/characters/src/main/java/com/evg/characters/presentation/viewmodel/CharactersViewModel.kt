@@ -39,8 +39,11 @@ class CharactersViewModel @Inject constructor(
     private val _characterEpisodes = MutableStateFlow<List<Episode>?>(null)
     val characterEpisodes: StateFlow<List<Episode>?> get() = _characterEpisodes
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    private val _isInfoLoading = MutableStateFlow(true)
+    val isInfoLoading: StateFlow<Boolean> = _isInfoLoading
+
+    private val _isEpisodesLoading = MutableStateFlow(true)
+    val isEpisodesLoading: StateFlow<Boolean> = _isEpisodesLoading
 
     var selectedStatus by mutableStateOf<StatusType?>(null)
     var selectedSpecies by mutableStateOf<String?>(null)
@@ -48,23 +51,25 @@ class CharactersViewModel @Inject constructor(
 
     fun getCharacterInfo(id: Int) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _isInfoLoading.value = true
             charactersUseCases.getCharacterById(id = id)
                 .collect { character ->
                     _characterInfo.value = character
                     character?.let {
                         getCharacterEpisodes(it.episode)
                     }
-                    _isLoading.value = false
+                    _isInfoLoading.value = false
                 }
         }
     }
 
     private fun getCharacterEpisodes(episodeUrls: List<String>) {
         viewModelScope.launch {
+            _isEpisodesLoading.value = true
             charactersUseCases.getEpisodesList(episodeUrls)
                 .collect { episodes ->
                     _characterEpisodes.value = episodes
+                    _isEpisodesLoading.value = false
                 }
         }
     }

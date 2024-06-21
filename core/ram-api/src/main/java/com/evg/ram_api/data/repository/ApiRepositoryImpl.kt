@@ -70,6 +70,10 @@ class ApiRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCharactersList(listIds: List<Int>): Response<List<CharacterResponse>> {
+        if (listIds.isEmpty()) {
+            return Response.Success(emptyList())
+        }
+
         val idParams = listIds.joinToString(",")
         val url = "${ktor.mainURL}/character/$idParams"
 
@@ -129,6 +133,10 @@ class ApiRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getEpisodesList(listIds: List<Int>): Response<List<EpisodeResponse>> {
+        if (listIds.isEmpty()) {
+            return Response.Success(emptyList())
+        }
+
         val idParams = listIds.joinToString(",")
         val url = "${ktor.mainURL}/episode/$idParams"
 
@@ -192,6 +200,10 @@ class ApiRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLocationsList(listIds: List<Int>): Response<List<LocationResponse>> {
+        if (listIds.isEmpty()) {
+            return Response.Success(emptyList())
+        }
+
         val idParams = listIds.joinToString(",")
         val url = "${ktor.mainURL}/location/$idParams"
 

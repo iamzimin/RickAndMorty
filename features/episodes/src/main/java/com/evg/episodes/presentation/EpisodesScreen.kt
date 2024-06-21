@@ -27,13 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.evg.episodes.presentation.mapper.toEpisodeUI
 import com.evg.episodes.presentation.viewmodel.EpisodesViewModel
 import com.evg.resource.CharacterCard
+import com.evg.resource.CharacterCardShimmer
 import com.evg.resource.EpisodeCard
+import com.evg.resource.EpisodeCardShimmer
 import com.evg.resource.FragmentHeader
 import com.evg.resource.R
 import com.evg.resource.theme.BorderRadius
@@ -55,16 +58,29 @@ fun EpisodesScreen(
                 viewModel.setNameFilter(name = newName)
             },
         )
-        LazyColumn {
-            items(
-                count = episodes.itemCount,
-                key = episodes.itemKey { it.id },
-            ) { index ->
-                val item = episodes[index]
-                if (item != null) {
-                    EpisodeCard(
-                        episodeUI = item.toEpisodeUI()
-                    )
+
+        when (episodes.loadState.refresh) {
+            is LoadState.Loading -> {
+                LazyColumn {
+                    items(10) {
+                        EpisodeCardShimmer()
+                    }
+                }
+            }
+            is LoadState.Error -> { }
+            is LoadState.NotLoading -> {
+                LazyColumn {
+                    items(
+                        count = episodes.itemCount,
+                        key = episodes.itemKey { it.id },
+                    ) { index ->
+                        val item = episodes[index]
+                        if (item != null) {
+                            EpisodeCard(
+                                episodeUI = item.toEpisodeUI()
+                            )
+                        }
+                    }
                 }
             }
         }

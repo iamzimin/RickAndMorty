@@ -34,30 +34,33 @@ class LocationViewModel @Inject constructor(
     private val _locationCharacters = MutableStateFlow<List<Character>?>(null)
     val locationCharacters: StateFlow<List<Character>?> get() = _locationCharacters
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    private val _isInfoLoading = MutableStateFlow(true)
+    val isInfoLoading: StateFlow<Boolean> = _isInfoLoading
 
-    //var selectedType by mutableStateOf<String?>(null)
+    private val _isResidentsLoading = MutableStateFlow(true)
+    val isResidentsLoading: StateFlow<Boolean> = _isResidentsLoading
 
     fun getLocationInfo(id: Int) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _isInfoLoading.value = true
             locationUseCases.getLocationById(id = id)
                 .collect { location ->
                     _locationInfo.value = location
                     location?.let {
-                        getCharacterEpisodes(it.residents)
+                        getLocationCharacters(it.residents)
                     }
-                    _isLoading.value = false
+                    _isInfoLoading.value = false
                 }
         }
     }
 
-    private fun getCharacterEpisodes(episodeUrls: List<String>) {
+    private fun getLocationCharacters(episodeUrls: List<String>) {
         viewModelScope.launch {
+            _isResidentsLoading.value = true
             locationUseCases.getCharactersList(episodeUrls)
                 .collect { characters ->
                     _locationCharacters.value = characters
+                    _isResidentsLoading.value = false
                 }
         }
     }
@@ -68,6 +71,5 @@ class LocationViewModel @Inject constructor(
 
     fun setLocationType(status: String?) {
         filter.value = filter.value.copy(type = status)
-        //selectedType = filter.value.type
     }
 }

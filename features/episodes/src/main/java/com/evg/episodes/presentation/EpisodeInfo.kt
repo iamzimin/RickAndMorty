@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,12 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.evg.resource.CharacterCard
+import com.evg.resource.CharacterCardShimmer
 import com.evg.resource.EpisodeCard
+import com.evg.resource.EpisodeCardShimmer
 import com.evg.resource.InfoCard
+import com.evg.resource.NoInternetConnection
 import com.evg.resource.model.character.CharacterGenderUI
 import com.evg.resource.model.character.CharacterLocationUI
 import com.evg.resource.model.character.CharacterOriginUI
@@ -38,6 +44,7 @@ import com.evg.resource.model.character.CharacterStatusUI
 import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.model.character.EpisodeUI
 import com.evg.resource.theme.BorderRadius
+import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
 import com.evg.resource.theme.VerticalSpacerPadding
 
@@ -46,6 +53,7 @@ import com.evg.resource.theme.VerticalSpacerPadding
 fun EpisodeInfo(
     episodeUI: EpisodeUI,
     charactersUI: List<CharacterUI>?,
+    isCharactersLoading: Boolean,
 ) {
     Column {
         Row(
@@ -55,6 +63,7 @@ fun EpisodeInfo(
             Text(
                 text = episodeUI.name,
                 style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
             )
         }
         Spacer(modifier = Modifier.height(5.dp))
@@ -70,14 +79,14 @@ fun EpisodeInfo(
                     ) {
                         Row {
                             InfoCard(
-                                header = "Season: ",
+                                header = "Season",
                                 content = episodeUI.episode.first.toString(),
                                 modifier = Modifier.weight(1f),
                             )
                             Spacer(modifier = Modifier.width(VerticalSpacerPadding))
 
                             InfoCard(
-                                header = "Episode: ",
+                                header = "Episode",
                                 content = episodeUI.episode.second.toString(),
                                 modifier = Modifier.weight(1f),
                             )
@@ -87,7 +96,7 @@ fun EpisodeInfo(
 
                         Row {
                             InfoCard(
-                                header = "Air date: ",
+                                header = "Air date",
                                 content = episodeUI.air_date,
                                 modifier = Modifier.weight(1f),
                             )
@@ -96,15 +105,35 @@ fun EpisodeInfo(
                         Spacer(modifier = Modifier.height(VerticalSpacerPadding))
 
                         Text(
-                            text = "Characters",
+                            text = "Characters (${episodeUI.characters.size})",
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }
                 }
 
-                charactersUI?.let { characters ->
-                    items(characters) { character ->
-                        CharacterCard(characterUI = character)
+                if (isCharactersLoading) {
+                    items(episodeUI.characters.size) {
+                        CharacterCardShimmer()
+                    }
+                } else {
+                    if (charactersUI == null) {
+                        item {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = LazyColumnNoInfoPadding),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                NoInternetConnection(
+                                    imageSize = 100,
+                                    textStyle = MaterialTheme.typography.bodyLarge,
+                                )
+                            }
+                        }
+                    } else {
+                        items(charactersUI) { character ->
+                            CharacterCard(characterUI = character)
+                        }
                     }
                 }
             }
@@ -175,7 +204,8 @@ fun EpisodeInfoPreview() {
                     ),
                     url = "https://rickandmortyapi.com/api/character/1"
                 ),
-            )
+            ),
+            isCharactersLoading = false,
         )
     }
 }

@@ -3,32 +3,34 @@ package com.evg.locations.presentation
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evg.resource.CharacterCard
+import com.evg.resource.CharacterCardShimmer
 import com.evg.resource.InfoCard
-import com.evg.resource.model.character.CharacterGenderUI
-import com.evg.resource.model.character.CharacterLocationUI
-import com.evg.resource.model.character.CharacterOriginUI
-import com.evg.resource.model.character.CharacterStatusUI
+import com.evg.resource.NoInternetConnection
 import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.model.character.LocationUI
+import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
 import com.evg.resource.theme.VerticalSpacerPadding
 
@@ -37,6 +39,7 @@ import com.evg.resource.theme.VerticalSpacerPadding
 fun LocationInfo(
     locationUI: LocationUI,
     charactersUI: List<CharacterUI>?,
+    isResidentsLoading: Boolean,
 ) {
     Column {
         Row(
@@ -46,6 +49,7 @@ fun LocationInfo(
             Text(
                 text = locationUI.name,
                 style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
             )
         }
         Spacer(modifier = Modifier.height(5.dp))
@@ -61,13 +65,13 @@ fun LocationInfo(
                     ) {
                         Row {
                             InfoCard(
-                                header = "Type: ",
+                                header = "Type",
                                 content = locationUI.type,
                                 modifier = Modifier.weight(1f),
                             )
                             Spacer(modifier = Modifier.width(VerticalSpacerPadding))
                             InfoCard(
-                                header = "Dimension: ",
+                                header = "Dimension",
                                 content = locationUI.dimension,
                                 modifier = Modifier.weight(1f),
                             )
@@ -75,22 +79,41 @@ fun LocationInfo(
                         Spacer(modifier = Modifier.height(VerticalSpacerPadding))
 
                         Text(
-                            text = "Characters",
+                            text = "Residents (${locationUI.residents.size})",
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }
                 }
 
-                charactersUI?.let { characters ->
-                    items(characters) { character ->
-                        CharacterCard(characterUI = character)
+                if (isResidentsLoading) {
+                    items(locationUI.residents.size) {
+                        CharacterCardShimmer()
+                    }
+                } else {
+                    if (charactersUI == null) {
+                        item {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = LazyColumnNoInfoPadding),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                NoInternetConnection(
+                                    imageSize = 100,
+                                    textStyle = MaterialTheme.typography.bodyLarge,
+                                )
+                            }
+                        }
+                    } else {
+                        items(charactersUI) { character ->
+                            CharacterCard(characterUI = character)
+                        }
                     }
                 }
             }
         }
     }
 }
-
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -109,7 +132,7 @@ fun LocationInfoPreview() {
                 ),
                 url = "https://rickandmortyapi.com/api/location/35"
             ),
-            charactersUI = listOf(
+            /*charactersUI = listOf(
                 CharacterUI(
                     id = 1,
                     name = "Rick Sanchez",
@@ -154,7 +177,9 @@ fun LocationInfoPreview() {
                     ),
                     url = "https://rickandmortyapi.com/api/character/1"
                 ),
-            )
+            )*/
+            charactersUI = null,
+            isResidentsLoading = false,
         )
     }
 }

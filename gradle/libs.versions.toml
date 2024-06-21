@@ -25,6 +25,7 @@ paging = "3.3.0"
 coil = "2.6.0"
 room = "2.6.1"
 json = "1.7.0"
+shimmer = "1.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -89,6 +90,9 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 kotlinx-json-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "json" }
+
+# Shimmer
+shimmer-compose = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "shimmer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

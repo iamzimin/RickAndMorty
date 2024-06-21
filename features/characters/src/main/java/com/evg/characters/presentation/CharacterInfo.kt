@@ -2,9 +2,11 @@ package com.evg.characters.presentation
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +29,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,8 +42,12 @@ import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.evg.characters.R
 import com.evg.resource.CharacterCard
+import com.evg.resource.CharacterCardShimmer
 import com.evg.resource.EpisodeCard
+import com.evg.resource.EpisodeCardShimmer
 import com.evg.resource.InfoCard
+import com.evg.resource.LocationCardShimmer
+import com.evg.resource.NoInternetConnection
 import com.evg.resource.model.character.CharacterGenderUI
 import com.evg.resource.model.character.CharacterLocationUI
 import com.evg.resource.model.character.CharacterOriginUI
@@ -48,14 +56,17 @@ import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.model.character.EpisodeUI
 import com.evg.resource.model.character.color
 import com.evg.resource.theme.BorderRadius
+import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
 import com.evg.resource.theme.VerticalSpacerPadding
+import com.valentinilk.shimmer.shimmer
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CharacterInfo(
     characterUI: CharacterUI,
     episodesUI: List<EpisodeUI>?,
+    isEpisodesLoading: Boolean,
 ) {
     Column {
         Row(
@@ -65,6 +76,7 @@ fun CharacterInfo(
             Text(
                 text = characterUI.name,
                 style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
             )
         }
         Spacer(modifier = Modifier.height(5.dp))
@@ -93,18 +105,40 @@ fun CharacterInfo(
                                 contentDescription = characterUI.image,
                                 contentScale = ContentScale.FillWidth,
                                 loading = {
-                                    /*Box(modifier = Modifier.fillMaxSize()) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.align(Alignment.Center)
+                                    Box(
+                                        modifier = Modifier
+                                            .size(300.dp)
+                                            .shimmer(),
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .background(Color.LightGray)
                                         )
-                                    }*/
+                                    }
                                 },
                                 error = {
-                                    /*Box(modifier = Modifier.fillMaxSize()) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.align(Alignment.Center)
-                                        )
-                                    }*/
+                                    Image(
+                                        modifier = Modifier
+                                            .background(
+                                                if (isSystemInDarkTheme()) {
+                                                    Color.DarkGray
+                                                } else {
+                                                    Color.LightGray
+                                                }
+                                            )
+                                            .scale(0.5f),
+                                        painter = painterResource(id = com.evg.resource.R.drawable.file_error),
+                                        contentDescription = "File Error",
+                                        colorFilter = ColorFilter
+                                            .tint(
+                                                if (isSystemInDarkTheme()) {
+                                                    Color.Gray
+                                                } else {
+                                                    Color.DarkGray
+                                                }
+                                            ),
+                                    )
                                 }
                             )
                             Row(
@@ -173,14 +207,34 @@ fun CharacterInfo(
                     Spacer(modifier = Modifier.height(VerticalSpacerPadding))
 
                     Text(
-                        text = "Episodes",
+                        text = "Episodes (${characterUI.episode.size})",
                         style = MaterialTheme.typography.titleLarge,
                     )
                 }
 
-                episodesUI?.let { episodes ->
-                    items(episodes) { episode ->
-                        EpisodeCard(episodeUI = episode)
+                if (isEpisodesLoading) {
+                    items(characterUI.episode.size) {
+                        EpisodeCardShimmer()
+                    }
+                } else {
+                    if (episodesUI == null) {
+                        item {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = LazyColumnNoInfoPadding),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                NoInternetConnection(
+                                    imageSize = 100,
+                                    textStyle = MaterialTheme.typography.bodyLarge,
+                                )
+                            }
+                        }
+                    } else {
+                        items(episodesUI) { episode ->
+                            EpisodeCard(episodeUI = episode)
+                        }
                     }
                 }
             }
@@ -196,7 +250,7 @@ fun CharacterInfoPreview() {
         CharacterInfo(
             characterUI = CharacterUI(
                 id = 1,
-                name = "Rick Sanchez",
+                name = "Rick Saaaaaaaaaaaaaaa aaaaaaaaaaaaaanchez",
                 status = CharacterStatusUI.ALIVE,
                 species = "Human",
                 type = "",
@@ -239,7 +293,8 @@ fun CharacterInfoPreview() {
                     ),
                     url = "https://rickandmortyapi.com/api/episode/35"
                 )
-            )
+            ),
+            isEpisodesLoading = false,
         )
     }
 }

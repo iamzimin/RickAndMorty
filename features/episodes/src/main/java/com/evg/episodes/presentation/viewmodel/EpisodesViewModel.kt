@@ -1,8 +1,5 @@
 package com.evg.episodes.presentation.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -37,28 +34,33 @@ class EpisodesViewModel @Inject constructor(
     private val _episodeCharacters = MutableStateFlow<List<Character>?>(null)
     val episodeCharacters: StateFlow<List<Character>?> get() = _episodeCharacters
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    private val _isInfoLoading = MutableStateFlow(true)
+    val isInfoLoading: StateFlow<Boolean> = _isInfoLoading
+
+    private val _isCharactersLoading = MutableStateFlow(true)
+    val isCharactersLoading: StateFlow<Boolean> = _isCharactersLoading
 
     fun getEpisodeInfo(id: Int) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _isInfoLoading.value = true
             episodesUseCases.getEpisodeById(id = id)
                 .collect { episode ->
                     _episodeInfo.value = episode
                     episode?.let {
                         getEpisodeCharacters(it.characters)
                     }
-                    _isLoading.value = false
+                    _isInfoLoading.value = false
                 }
         }
     }
 
     private fun getEpisodeCharacters(episodeUrls: List<String>) {
         viewModelScope.launch {
+            _isCharactersLoading.value = true
             episodesUseCases.getCharactersList(episodeUrls)
                 .collect { characters ->
                     _episodeCharacters.value = characters
+                    _isCharactersLoading.value = false
                 }
         }
     }

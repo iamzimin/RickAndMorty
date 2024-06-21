@@ -1,6 +1,7 @@
 package com.evg.characters.presentation
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,15 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.mapper.toEpisodeUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
+import com.evg.resource.NoInternetConnection
 import com.evg.resource.theme.EdgesMargin
+import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
 
 
@@ -29,7 +31,8 @@ fun CharacterScreen(
 ) {
     val characterInfo by viewModel.characterInfo.collectAsState()
     val characterEpisodes by viewModel.characterEpisodes.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
+    val isLoading by viewModel.isInfoLoading.collectAsState()
+    val isEpisodesLoading by viewModel.isEpisodesLoading.collectAsState()
 
     LaunchedEffect(characterId) {
         viewModel.getCharacterInfo(characterId)
@@ -41,15 +44,35 @@ fun CharacterScreen(
             .padding(horizontal = EdgesMargin),
     ) {
         if (isLoading) {
-            CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary
-            )
-        } else {
-            characterInfo?.let { info ->
-                CharacterInfo(
-                    characterUI = info.toCharacterUI(),
-                    episodesUI = characterEpisodes?.map { it.toEpisodeUI() }
+            Box(
+                Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
                 )
+            }
+        } else {
+            if (characterInfo == null) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(vertical = LazyColumnNoInfoPadding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NoInternetConnection(
+                        imageSize = 200,
+                        textStyle = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            } else {
+                characterInfo?.let { info ->
+                    CharacterInfo(
+                        characterUI = info.toCharacterUI(),
+                        episodesUI = characterEpisodes?.map { it.toEpisodeUI() },
+                        isEpisodesLoading = isEpisodesLoading,
+                    )
+                }
             }
         }
     }

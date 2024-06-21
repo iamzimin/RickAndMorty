@@ -5,15 +5,18 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,7 +33,9 @@ import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.TaskStackBuilder
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.evg.resource.model.character.CharacterGenderUI
 import com.evg.resource.model.character.CharacterLocationUI
 import com.evg.resource.model.character.CharacterOriginUI
@@ -48,7 +54,9 @@ import com.evg.resource.model.character.CharacterStatusUI
 import com.evg.resource.model.character.CharacterUI
 import com.evg.resource.model.character.color
 import com.evg.resource.theme.BorderRadius
+import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.RickAndMortyTheme
+import com.valentinilk.shimmer.shimmer
 import kotlin.coroutines.coroutineContext
 
 @Composable
@@ -80,15 +88,55 @@ fun CharacterCard(
         )*/
     ) {
         Row {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = characterUI.image,
                 modifier = Modifier.size(cardHeight),
                 contentDescription = characterUI.image,
                 alignment = Alignment.CenterStart,
+                contentScale = ContentScale.FillBounds, //Crop FillWidth
+                loading = {
+                    Box(
+                        modifier = Modifier
+                            .size(cardHeight)
+                            .shimmer(),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(cardHeight)
+                                .background(Color.LightGray)
+                        )
+                    }
+
+                },
+                error = {
+                    Image(
+                        modifier = Modifier
+                            .background(
+                                if (isSystemInDarkTheme()) {
+                                    Color.DarkGray
+                                } else {
+                                    Color.LightGray
+                                }
+                            )
+                            .scale(0.5f),
+                        painter = painterResource(id = R.drawable.file_error),
+                        contentDescription = "File Error",
+                        colorFilter = ColorFilter
+                            .tint(
+                                if (isSystemInDarkTheme()) {
+                                    Color.Gray
+                                } else {
+                                    Color.DarkGray
+                                }
+                            ),
+                    )
+                },
             )
+
             Column (
                 modifier = Modifier
-                    .fillMaxHeight(),
+                    .fillMaxHeight()
+                    .padding(horizontal = EdgesMargin),
                 verticalArrangement = Arrangement.SpaceAround,
             ) {
                 Column {
