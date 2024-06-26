@@ -30,8 +30,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="https"
-                      android:host="rickandmortyapi.com" /> <!--android:pathPrefix="/api/character/"-->
+                <data android:scheme="https"/>
+                <data android:host="rickandmortyapi.com"/>
+                <data android:pathPrefix="/api/character/"/>
+                <data android:pathPrefix="/api/episode/"/>
+                <data android:pathPrefix="/api/location/"/>
             </intent-filter>
 
         </activity>

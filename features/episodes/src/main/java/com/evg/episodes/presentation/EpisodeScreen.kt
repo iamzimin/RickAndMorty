@@ -19,6 +19,7 @@ import com.evg.episodes.presentation.mapper.toCharacterUI
 import com.evg.episodes.presentation.mapper.toEpisodeUI
 import com.evg.episodes.presentation.viewmodel.EpisodesViewModel
 import com.evg.resource.NoInternetConnection
+import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
@@ -58,9 +59,10 @@ fun EpisodeScreen(
                         .padding(vertical = LazyColumnNoInfoPadding),
                     contentAlignment = Alignment.Center
                 ) {
-                    NoInternetConnection(
+                    NotFound(
                         imageSize = 200,
                         textStyle = MaterialTheme.typography.titleLarge,
+                        pageName = "Episode",
                     )
                 }
             } else {

@@ -52,7 +52,7 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
                 }
             )
         ) { entry ->
-            val id = entry.arguments?.getInt("id") ?: -1 //TODO
+            val id = entry.arguments?.getInt("id") ?: -1
             CharacterScreen(characterId = id)
         }
         composable(
@@ -70,7 +70,7 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
                 }
             )
         ) { entry ->
-            val id = entry.arguments?.getInt("id") ?: -1 //TODO
+            val id = entry.arguments?.getInt("id") ?: -1
             EpisodeScreen(episodeId = id)
         }
         composable(
@@ -88,7 +88,7 @@ fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValue
                 }
             )
         ) { entry ->
-            val id = entry.arguments?.getInt("id") ?: -1 //TODO
+            val id = entry.arguments?.getInt("id") ?: -1
             LocationScreen(locationId = id)
         }
     }

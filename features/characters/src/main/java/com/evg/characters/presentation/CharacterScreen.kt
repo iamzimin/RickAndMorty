@@ -19,6 +19,7 @@ import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.mapper.toEpisodeUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
 import com.evg.resource.NoInternetConnection
+import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
@@ -60,9 +61,10 @@ fun CharacterScreen(
                         .padding(vertical = LazyColumnNoInfoPadding),
                     contentAlignment = Alignment.Center
                 ) {
-                    NoInternetConnection(
+                    NotFound(
                         imageSize = 200,
                         textStyle = MaterialTheme.typography.titleLarge,
+                        pageName = "Character",
                     )
                 }
             } else {
