@@ -77,4 +77,7 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Swipe Refresh
+    implementation(libs.swiperefresh.compose)
 }

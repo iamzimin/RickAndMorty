@@ -22,6 +22,8 @@ import com.evg.resource.FragmentHeader
 import com.evg.resource.LocationCard
 import com.evg.resource.LocationCardShimmer
 import com.evg.resource.theme.EdgesMargin
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @Composable
@@ -29,6 +31,8 @@ fun LocationsScreen(
     viewModel: LocationViewModel = hiltViewModel<LocationViewModel>(),
 ) {
     val locations = viewModel.locations.collectAsLazyPagingItems()
+
+    val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
 
     Column(
         modifier = Modifier.padding(horizontal = EdgesMargin)
@@ -51,18 +55,23 @@ fun LocationsScreen(
             }
             is LoadState.Error -> { }
             is LoadState.NotLoading -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxHeight()
+                SwipeRefresh(
+                    state = refreshingState,
+                    onRefresh = { viewModel.updateLocations() }
                 ) {
-                    items(
-                        count = locations.itemCount,
-                        key = locations.itemKey { it.id },
-                    ) { index ->
-                        val item = locations[index]
-                        if (item != null) {
-                            LocationCard(
-                                locationUI = item.toLocationUI()
-                            )
+                    LazyColumn(
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        items(
+                            count = locations.itemCount,
+                            key = locations.itemKey { it.id },
+                        ) { index ->
+                            val item = locations[index]
+                            if (item != null) {
+                                LocationCard(
+                                    locationUI = item.toLocationUI()
+                                )
+                            }
                         }
                     }
                 }

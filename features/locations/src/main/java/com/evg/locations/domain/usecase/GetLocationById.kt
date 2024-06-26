@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetLocationById @Inject constructor(
     private val locationRepository: LocationRepository
 ) {
-    operator fun invoke(id: Int): Flow<Location?> {
+    fun invoke(id: Int): Flow<Location?> {
         return locationRepository.getLocationById(id = id)
     }
 }

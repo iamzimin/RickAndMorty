@@ -42,6 +42,8 @@ import com.evg.resource.theme.BorderRadius
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.IconSize
 import com.evg.resource.theme.LazyColumnNoInfoPadding
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @Composable
@@ -50,6 +52,8 @@ fun CharactersScreen(
 ) {
     val characters = viewModel.characters.collectAsLazyPagingItems()
     var isShowDialog by remember { mutableStateOf(false) }
+
+    val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
 
     Column(
         modifier = Modifier.padding(horizontal = EdgesMargin)
@@ -107,19 +111,24 @@ fun CharactersScreen(
             }
             is LoadState.Error -> { }
             is LoadState.NotLoading -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxHeight()
+                SwipeRefresh(
+                    state = refreshingState,
+                    onRefresh = { viewModel.updateCharacters() }
                 ) {
-                    items(
-                        count = characters.itemCount,
-                        key = characters.itemKey { it.id },
-                        contentType = characters.itemContentType { it.image },
-                    ) { index ->
-                        val item = characters[index]
-                        if (item != null) {
-                            CharacterCard(
-                                characterUI = item.toCharacterUI()
-                            )
+                    LazyColumn(
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        items(
+                            count = characters.itemCount,
+                            key = characters.itemKey { it.id },
+                            contentType = characters.itemContentType { it.image },
+                        ) { index ->
+                            val item = characters[index]
+                            if (item != null) {
+                                CharacterCard(
+                                    characterUI = item.toCharacterUI()
+                                )
+                            }
                         }
                     }
                 }

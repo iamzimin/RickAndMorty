@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetCharacterById @Inject constructor(
     private val charactersRepository: CharactersRepository
 ) {
-    operator fun invoke(id: Int): Flow<Character?> {
+    fun invoke(id: Int): Flow<Character?> {
         return charactersRepository.getCharacterById(id = id)
     }
 }

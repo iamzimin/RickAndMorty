@@ -23,15 +23,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
     private val charactersUseCases: CharactersUseCases,
 ) : ViewModel() {
     private val filter = MutableStateFlow(CharacterFilter())
-    val characters: StateFlow<PagingData<Character>> = filter.flatMapLatest { currentFilter ->
-        charactersUseCases.getAllCharacters.invoke(filter = currentFilter)
-    }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+    private val _characters = MutableStateFlow<PagingData<Character>>(PagingData.empty())
+    val characters: StateFlow<PagingData<Character>> get() = _characters
 
     private val _characterInfo = MutableStateFlow<Character?>(null)
     val characterInfo: StateFlow<Character?> get() = _characterInfo
@@ -49,10 +48,24 @@ class CharactersViewModel @Inject constructor(
     var selectedSpecies by mutableStateOf<String?>(null)
     var selectedGender by mutableStateOf<GenderType?>(null)
 
+    init {
+        updateCharacters()
+    }
+
+    fun updateCharacters() {
+        viewModelScope.launch {
+            charactersUseCases.getAllCharacters.invoke(filter = filter.value)
+                .cachedIn(viewModelScope)
+                .collect { characters ->
+                    _characters.value = characters
+                }
+        }
+    }
+
     fun getCharacterInfo(id: Int) {
         viewModelScope.launch {
             _isInfoLoading.value = true
-            charactersUseCases.getCharacterById(id = id)
+            charactersUseCases.getCharacterById.invoke(id = id)
                 .collect { character ->
                     _characterInfo.value = character
                     character?.let {
@@ -66,7 +79,7 @@ class CharactersViewModel @Inject constructor(
     private fun getCharacterEpisodes(episodeUrls: List<String>) {
         viewModelScope.launch {
             _isEpisodesLoading.value = true
-            charactersUseCases.getEpisodesList(episodeUrls)
+            charactersUseCases.getEpisodesList.invoke(episodeUrls)
                 .collect { episodes ->
                     _characterEpisodes.value = episodes
                     _isEpisodesLoading.value = false
@@ -76,20 +89,24 @@ class CharactersViewModel @Inject constructor(
 
     fun setNameFilter(name: String) {
         filter.value = filter.value.copy(name = name)
+        updateCharacters()
     }
 
     fun setCharacterStatus(status: StatusType?) {
         filter.value = filter.value.copy(status = status)
         selectedStatus = filter.value.status
+        updateCharacters()
     }
 
     fun setCharacterSpecies(species: String?) {
         filter.value = filter.value.copy(species = species)
         selectedSpecies = filter.value.species
+        updateCharacters()
     }
 
     fun setCharacterGender(gender: GenderType?) {
         filter.value = filter.value.copy(gender = gender)
         selectedGender = filter.value.gender
+        updateCharacters()
     }
 }

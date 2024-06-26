@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetCharactersList @Inject constructor(
     private val episodesRepository: EpisodesRepository
 ) {
-    operator fun invoke(urlsList: List<String>): Flow<List<Character>?> {
+    fun invoke(urlsList: List<String>): Flow<List<Character>?> {
         return episodesRepository.getCharactersList(urlsList = urlsList)
     }
 }

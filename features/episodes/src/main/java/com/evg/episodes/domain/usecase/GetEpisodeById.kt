@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetEpisodeById @Inject constructor(
     private val episodesRepository: EpisodesRepository
 ) {
-    operator fun invoke(id: Int): Flow<Episode?> {
+    fun invoke(id: Int): Flow<Episode?> {
         return episodesRepository.getEpisodeById(id = id)
     }
 }

@@ -24,9 +24,9 @@ class LocationViewModel @Inject constructor(
     private val locationUseCases: LocationUseCases,
 ) : ViewModel() {
     private val filter = MutableStateFlow(LocationFilter())
-    val locations: StateFlow<PagingData<Location>> = filter.flatMapLatest { currentFilter ->
-        locationUseCases.getAllLocations.invoke(filter = currentFilter)
-    }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+    private val _locations = MutableStateFlow<PagingData<Location>>(PagingData.empty())
+    val locations: StateFlow<PagingData<Location>> get() = _locations
 
     private val _locationInfo = MutableStateFlow<Location?>(null)
     val locationInfo: StateFlow<Location?> get() = _locationInfo
@@ -40,10 +40,24 @@ class LocationViewModel @Inject constructor(
     private val _isResidentsLoading = MutableStateFlow(true)
     val isResidentsLoading: StateFlow<Boolean> = _isResidentsLoading
 
+    init {
+        updateLocations()
+    }
+
+    fun updateLocations() {
+        viewModelScope.launch {
+            locationUseCases.getAllLocations.invoke(filter = filter.value)
+                .cachedIn(viewModelScope)
+                .collect { locations ->
+                    _locations.value = locations
+                }
+        }
+    }
+
     fun getLocationInfo(id: Int) {
         viewModelScope.launch {
             _isInfoLoading.value = true
-            locationUseCases.getLocationById(id = id)
+            locationUseCases.getLocationById.invoke(id = id)
                 .collect { location ->
                     _locationInfo.value = location
                     location?.let {
@@ -57,7 +71,7 @@ class LocationViewModel @Inject constructor(
     private fun getLocationCharacters(episodeUrls: List<String>) {
         viewModelScope.launch {
             _isResidentsLoading.value = true
-            locationUseCases.getCharactersList(episodeUrls)
+            locationUseCases.getCharactersList.invoke(episodeUrls)
                 .collect { characters ->
                     _locationCharacters.value = characters
                     _isResidentsLoading.value = false
@@ -67,9 +81,11 @@ class LocationViewModel @Inject constructor(
 
     fun setNameFilter(name: String) {
         filter.value = filter.value.copy(name = name)
+        updateLocations()
     }
 
-    fun setLocationType(status: String?) {
+    /*fun setLocationType(status: String?) {
         filter.value = filter.value.copy(type = status)
-    }
+        updateLocations()
+    }*/
 }
