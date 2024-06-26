@@ -23,6 +23,8 @@ import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @Composable
@@ -35,6 +37,8 @@ fun CharacterScreen(
     val isLoading by viewModel.isInfoLoading.collectAsState()
     val isEpisodesLoading by viewModel.isEpisodesLoading.collectAsState()
 
+    val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
+
     LaunchedEffect(characterId) {
         viewModel.getCharacterInfo(characterId)
     }
@@ -44,36 +48,41 @@ fun CharacterScreen(
             //.background(Color.DarkGray)
             .padding(horizontal = EdgesMargin),
     ) {
-        if (isLoading) {
-            Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        } else {
-            if (characterInfo == null) {
+        SwipeRefresh(
+            state = refreshingState,
+            onRefresh = { viewModel.getCharacterInfo(characterId) }
+        ) {
+            if (isLoading) {
                 Box(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(vertical = LazyColumnNoInfoPadding),
+                    Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    NotFound(
-                        imageSize = 200,
-                        textStyle = MaterialTheme.typography.titleLarge,
-                        pageName = "Character",
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             } else {
-                characterInfo?.let { info ->
-                    CharacterInfo(
-                        characterUI = info.toCharacterUI(),
-                        episodesUI = characterEpisodes?.map { it.toEpisodeUI() },
-                        isEpisodesLoading = isEpisodesLoading,
-                    )
+                if (characterInfo == null) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(vertical = LazyColumnNoInfoPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        NotFound(
+                            imageSize = 200,
+                            textStyle = MaterialTheme.typography.titleLarge,
+                            pageName = "Character",
+                        )
+                    }
+                } else {
+                    characterInfo?.let { info ->
+                        CharacterInfo(
+                            characterUI = info.toCharacterUI(),
+                            episodesUI = characterEpisodes?.map { it.toEpisodeUI() },
+                            isEpisodesLoading = isEpisodesLoading,
+                        )
+                    }
                 }
             }
         }

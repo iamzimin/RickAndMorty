@@ -23,6 +23,8 @@ import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun EpisodeScreen(
@@ -34,6 +36,8 @@ fun EpisodeScreen(
     val isLoading by viewModel.isInfoLoading.collectAsState()
     val isCharactersLoading by viewModel.isCharactersLoading.collectAsState()
 
+    val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
+
     LaunchedEffect(episodeId) {
         viewModel.getEpisodeInfo(episodeId)
     }
@@ -42,36 +46,41 @@ fun EpisodeScreen(
             .fillMaxSize()
             .padding(horizontal = EdgesMargin),
     ) {
-        if (isLoading) {
-            Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        } else {
-            if (episodeInfo == null) {
+        SwipeRefresh(
+            state = refreshingState,
+            onRefresh = { viewModel.getEpisodeInfo(episodeId) }
+        ) {
+            if (isLoading) {
                 Box(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(vertical = LazyColumnNoInfoPadding),
+                    Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    NotFound(
-                        imageSize = 200,
-                        textStyle = MaterialTheme.typography.titleLarge,
-                        pageName = "Episode",
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             } else {
-                episodeInfo?.let { info ->
-                    EpisodeInfo(
-                        episodeUI = info.toEpisodeUI(),
-                        charactersUI = episodeCharacters?.map { it.toCharacterUI() },
-                        isCharactersLoading = isCharactersLoading,
-                    )
+                if (episodeInfo == null) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(vertical = LazyColumnNoInfoPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        NotFound(
+                            imageSize = 200,
+                            textStyle = MaterialTheme.typography.titleLarge,
+                            pageName = "Episode",
+                        )
+                    }
+                } else {
+                    episodeInfo?.let { info ->
+                        EpisodeInfo(
+                            episodeUI = info.toEpisodeUI(),
+                            charactersUI = episodeCharacters?.map { it.toCharacterUI() },
+                            isCharactersLoading = isCharactersLoading,
+                        )
+                    }
                 }
             }
         }

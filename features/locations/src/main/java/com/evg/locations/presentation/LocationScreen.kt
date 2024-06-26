@@ -23,6 +23,8 @@ import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
 import com.evg.resource.theme.RickAndMortyTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun LocationScreen(
@@ -34,6 +36,8 @@ fun LocationScreen(
     val isInfoLoading by viewModel.isInfoLoading.collectAsState()
     val isResidentsLoading by viewModel.isResidentsLoading.collectAsState()
 
+    val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
+
     LaunchedEffect(locationId) {
         viewModel.getLocationInfo(locationId)
     }
@@ -42,36 +46,41 @@ fun LocationScreen(
             .fillMaxSize()
             .padding(horizontal = EdgesMargin),
     ) {
-        if (isInfoLoading) {
-            Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        } else {
-            if (locationInfo == null) {
+        SwipeRefresh(
+            state = refreshingState,
+            onRefresh = { viewModel.getLocationInfo(locationId) }
+        ) {
+            if (isInfoLoading) {
                 Box(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(vertical = LazyColumnNoInfoPadding),
+                    Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    NotFound(
-                        imageSize = 200,
-                        textStyle = MaterialTheme.typography.titleLarge,
-                        pageName = "Location",
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             } else {
-                locationInfo?.let { info ->
-                    LocationInfo(
-                        locationUI = info.toLocationUI(),
-                        charactersUI = locationCharacters?.map { it.toCharacterUI() },
-                        isResidentsLoading = isResidentsLoading,
-                    )
+                if (locationInfo == null) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(vertical = LazyColumnNoInfoPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        NotFound(
+                            imageSize = 200,
+                            textStyle = MaterialTheme.typography.titleLarge,
+                            pageName = "Location",
+                        )
+                    }
+                } else {
+                    locationInfo?.let { info ->
+                        LocationInfo(
+                            locationUI = info.toLocationUI(),
+                            charactersUI = locationCharacters?.map { it.toCharacterUI() },
+                            isResidentsLoading = isResidentsLoading,
+                        )
+                    }
                 }
             }
         }
