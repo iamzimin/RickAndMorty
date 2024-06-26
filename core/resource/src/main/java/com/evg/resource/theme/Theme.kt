@@ -16,10 +16,10 @@ private val DarkColorScheme = darkColorScheme(
     secondary = secondaryDark,
     onSecondary = Color(0xFF154121),
     //tertiary = Color(0xFF0C6370),
-    surfaceVariant = Color(0xFF364139),
-    secondaryContainer = primaryDark,
-    //outline = Color(0xFFFFFFFF)
+    surfaceVariant = Color(0xFF364139), // Card Background
+    secondaryContainer = primaryDark, // Selected icon on NavigationBar
 
+    // For test
     /*primaryContainer = Color.Red,
     onPrimaryContainer = Color.Red,
     inversePrimary = Color.Red,
@@ -60,9 +60,8 @@ private val LightColorScheme = lightColorScheme(
     secondary = secondaryLight,
     onSecondary = secondaryLight,
     //tertiary = Color(0xFF0C6370),
-    surfaceVariant = Color(0xFFD1E9D8),
-    secondaryContainer = primaryLight,
-    //outline = Color(0xFF000000)
+    surfaceVariant = Color(0xFFD1E9D8), // Card Background
+    secondaryContainer = primaryLight, // Selected icon on NavigationBar
 )
 
 @Composable
