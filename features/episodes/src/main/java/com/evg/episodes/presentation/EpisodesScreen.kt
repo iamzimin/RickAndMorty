@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -61,7 +62,9 @@ fun EpisodesScreen(
 
         when (episodes.loadState.refresh) {
             is LoadState.Loading -> {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     items(10) {
                         EpisodeCardShimmer()
                     }
@@ -69,7 +72,9 @@ fun EpisodesScreen(
             }
             is LoadState.Error -> { }
             is LoadState.NotLoading -> {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     items(
                         count = episodes.itemCount,
                         key = episodes.itemKey { it.id },

@@ -2,6 +2,7 @@ package com.evg.locations.presentation
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -40,7 +41,9 @@ fun LocationsScreen(
 
         when (locations.loadState.refresh) {
             is LoadState.Loading -> {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     items(10) {
                         LocationCardShimmer()
                     }
@@ -48,7 +51,9 @@ fun LocationsScreen(
             }
             is LoadState.Error -> { }
             is LoadState.NotLoading -> {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     items(
                         count = locations.itemCount,
                         key = locations.itemKey { it.id },
