@@ -35,8 +35,9 @@ import com.evg.resource.theme.RickAndMortyTheme
 fun LocationCard(
     locationUI: LocationUI,
 ) {
-    val context = LocalContext.current
+    val navController = LocalNavHostController.current
     val cardHeight = 130.dp
+
     Card(
         shape = RoundedCornerShape(BorderRadius),
         modifier = Modifier
@@ -45,11 +46,7 @@ fun LocationCard(
             .clip(shape = RoundedCornerShape(BorderRadius))
             .padding(vertical = 5.dp)
             .clickable {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://rickandmortyapi.com/api/location/${locationUI.id}")
-                )
-                context.startActivity(intent)
+                navController.navigate("location/${locationUI.id}")
             },
     ) {
         Column(

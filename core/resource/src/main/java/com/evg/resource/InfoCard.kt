@@ -36,18 +36,17 @@ fun InfoCard(
     content: String,
     modifier: Modifier,
     isClickable: Boolean = false,
-    link: String = "",
+    locationId: Int? = null,
 ) {
-    val context = LocalContext.current
+    val navController = LocalNavHostController.current
 
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(BorderRadius))
             .then(
-                if (isClickable && link.isNotEmpty()) {
+                if (isClickable && locationId != null) {
                     Modifier.clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                        context.startActivity(intent)
+                        navController.navigate("location/$locationId")
                     }
                 } else {
                     Modifier
@@ -130,7 +129,7 @@ fun InfoCardPreview() {
             content = "Earth (C-137)",
             modifier = Modifier,
             isClickable = true,
-            link = "https://rickandmortyapi.com/api/character/1"
+            locationId = -1,
         )
     }
 }

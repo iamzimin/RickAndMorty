@@ -22,6 +22,7 @@ import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.mapper.toEpisodeUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
 import com.evg.resource.CustomSwipeRefreshIndicator
+import com.evg.resource.LocalNavHostController
 import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
@@ -43,6 +44,7 @@ fun CharacterScreen(
     val isEpisodesLoading by viewModel.isEpisodesLoading.collectAsState()
 
     val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
+    val navController = LocalNavHostController.current
 
     if (!isInitialized) {
         LaunchedEffect(characterId) {
@@ -108,7 +110,9 @@ fun CharacterScreen(
 @Composable
 fun CharacterCardPreview() {
     RickAndMortyTheme {
-        CharacterScreen(characterId = 1)
+        CharacterScreen(
+            characterId = 1
+        )
     }
 }
 

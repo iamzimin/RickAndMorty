@@ -17,14 +17,18 @@ import com.evg.episodes.presentation.EpisodeScreen
 import com.evg.episodes.presentation.EpisodesScreen
 import com.evg.locations.presentation.LocationScreen
 import com.evg.locations.presentation.LocationsScreen
+import com.evg.resource.LocalNavHostController
 
 @Composable
-fun BottomNavGraph(navController: NavHostController, paddingValues: PaddingValues) {
+fun BottomNavGraph(paddingValues: PaddingValues) {
+    val navController = LocalNavHostController.current
+
     NavHost(
         navController = navController,
         startDestination = BottomBarScreen.Characters.route,
         modifier = Modifier.padding(paddingValues)
     ) {
+
         //Navigation
         composable(route = BottomBarScreen.Episodes.route) {
             EpisodesScreen()

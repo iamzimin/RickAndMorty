@@ -44,8 +44,9 @@ import com.evg.resource.theme.VerticalSpacerPadding
 fun EpisodeCard(
     episodeUI: EpisodeUI,
 ) {
-    val context = LocalContext.current
+    val navController = LocalNavHostController.current
     val cardHeight = 130.dp
+
     Card(
         shape = RoundedCornerShape(BorderRadius),
         modifier = Modifier
@@ -54,11 +55,7 @@ fun EpisodeCard(
             .clip(shape = RoundedCornerShape(BorderRadius))
             .padding(vertical = 5.dp)
             .clickable {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://rickandmortyapi.com/api/episode/${episodeUI.id}")
-                )
-                context.startActivity(intent)
+                navController.navigate("episode/${episodeUI.id}")
             },
     ) {
         Column(

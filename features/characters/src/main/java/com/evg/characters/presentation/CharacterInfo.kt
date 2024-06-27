@@ -193,7 +193,7 @@ fun CharacterInfo(
                                 content = characterUI.origin.name,
                                 modifier = Modifier.weight(1f),
                                 isClickable = true,
-                                link = characterUI.origin.url
+                                locationId = (Regex("location/(\\d+)").find(characterUI.origin.url)?.groups?.get(1)?.value)?.toIntOrNull(), //TODO
                             )
                             Spacer(modifier = Modifier.padding(5.dp))
                             InfoCard(
@@ -233,7 +233,9 @@ fun CharacterInfo(
                         }
                     } else {
                         items(episodesUI) { episode ->
-                            EpisodeCard(episodeUI = episode)
+                            EpisodeCard(
+                                episodeUI = episode
+                            )
                         }
                     }
                 }

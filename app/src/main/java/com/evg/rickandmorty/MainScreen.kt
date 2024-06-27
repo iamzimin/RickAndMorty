@@ -16,30 +16,37 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.evg.resource.LocalNavHostController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
-    ) { paddingValues ->
-        BottomNavGraph(navController = navController, paddingValues = paddingValues)
+
+    CompositionLocalProvider(LocalNavHostController provides navController) {
+        Scaffold(
+            bottomBar = { BottomBar() }
+        ) { paddingValues ->
+            BottomNavGraph(paddingValues = paddingValues)
+        }
     }
 }
 
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar() {
     val screens = listOf(
         BottomBarScreen.Episodes,
         BottomBarScreen.Characters,
         BottomBarScreen.Locations,
     )
+    val navController = LocalNavHostController.current
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 

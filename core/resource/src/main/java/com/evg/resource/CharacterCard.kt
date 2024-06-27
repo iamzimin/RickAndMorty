@@ -63,7 +63,7 @@ import kotlin.coroutines.coroutineContext
 fun CharacterCard(
     characterUI: CharacterUI
 ) {
-    val context = LocalContext.current
+    val navController = LocalNavHostController.current
     val cardHeight = 140.dp
 
     Card (
@@ -74,18 +74,8 @@ fun CharacterCard(
             .padding(vertical = 5.dp)
             .clip(shape = RoundedCornerShape(BorderRadius))
             .clickable {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://rickandmortyapi.com/api/character/${characterUI.id}")
-                )
-                context.startActivity(intent)
+                navController.navigate("character/${characterUI.id}")
             },
-        /*colors = CardColors(
-            containerColor = Color.Red,
-            contentColor = Color.Unspecified,
-            disabledContainerColor = Color.Unspecified,
-            disabledContentColor = Color.Unspecified,
-        )*/
     ) {
         Row {
             SubcomposeAsyncImage(
