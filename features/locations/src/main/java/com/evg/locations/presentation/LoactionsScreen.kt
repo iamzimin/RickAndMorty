@@ -18,6 +18,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.evg.locations.presentation.mapper.toLocationUI
 import com.evg.locations.presentation.viewmodel.LocationViewModel
+import com.evg.resource.CustomSwipeRefreshIndicator
 import com.evg.resource.FragmentHeader
 import com.evg.resource.LocationCard
 import com.evg.resource.LocationCardShimmer
@@ -57,7 +58,13 @@ fun LocationsScreen(
             is LoadState.NotLoading -> {
                 SwipeRefresh(
                     state = refreshingState,
-                    onRefresh = { viewModel.updateLocations() }
+                    onRefresh = { viewModel.updateLocations() },
+                    indicator = { state, trigger ->
+                        CustomSwipeRefreshIndicator(
+                            state = state,
+                            trigger = trigger,
+                        )
+                    },
                 ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight()

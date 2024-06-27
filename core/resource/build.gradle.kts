@@ -60,4 +60,7 @@ dependencies {
 
     // Shimmer
     implementation(libs.shimmer.compose)
+
+    // Swipe Refresh
+    implementation(libs.swiperefresh.compose)
 }

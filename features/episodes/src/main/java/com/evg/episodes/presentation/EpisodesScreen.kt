@@ -14,6 +14,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.evg.episodes.presentation.mapper.toEpisodeUI
 import com.evg.episodes.presentation.viewmodel.EpisodesViewModel
+import com.evg.resource.CustomSwipeRefreshIndicator
 import com.evg.resource.EpisodeCard
 import com.evg.resource.EpisodeCardShimmer
 import com.evg.resource.FragmentHeader
@@ -53,7 +54,13 @@ fun EpisodesScreen(
             is LoadState.NotLoading -> {
                 SwipeRefresh(
                     state = refreshingState,
-                    onRefresh = { viewModel.updateEpisodes() }
+                    onRefresh = { viewModel.updateEpisodes() },
+                    indicator = { state, trigger ->
+                        CustomSwipeRefreshIndicator(
+                            state = state,
+                            trigger = trigger,
+                        )
+                    },
                 ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight()

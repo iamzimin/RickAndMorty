@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.mapper.toEpisodeUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
+import com.evg.resource.CustomSwipeRefreshIndicator
 import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
@@ -57,7 +58,13 @@ fun CharacterScreen(
     ) {
         SwipeRefresh(
             state = refreshingState,
-            onRefresh = { viewModel.getCharacterInfo(characterId) }
+            onRefresh = { viewModel.getCharacterInfo(characterId) },
+            indicator = { state, trigger ->
+                CustomSwipeRefreshIndicator(
+                    state = state,
+                    trigger = trigger,
+                )
+            },
         ) {
             if (isLoading) {
                 Box(

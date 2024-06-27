@@ -34,6 +34,7 @@ import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
 import com.evg.resource.CharacterCard
 import com.evg.resource.CharacterCardShimmer
+import com.evg.resource.CustomSwipeRefreshIndicator
 import com.evg.resource.FragmentHeader
 import com.evg.resource.NoInternetConnection
 import com.evg.resource.theme.RickAndMortyTheme
@@ -113,7 +114,13 @@ fun CharactersScreen(
             is LoadState.NotLoading -> {
                 SwipeRefresh(
                     state = refreshingState,
-                    onRefresh = { viewModel.updateCharacters() }
+                    onRefresh = { viewModel.updateCharacters() },
+                    indicator = { state, trigger ->
+                        CustomSwipeRefreshIndicator(
+                            state = state,
+                            trigger = trigger,
+                        )
+                    },
                 ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight()

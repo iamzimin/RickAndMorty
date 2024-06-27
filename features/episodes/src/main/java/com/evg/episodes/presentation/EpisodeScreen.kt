@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.evg.episodes.presentation.mapper.toCharacterUI
 import com.evg.episodes.presentation.mapper.toEpisodeUI
 import com.evg.episodes.presentation.viewmodel.EpisodesViewModel
+import com.evg.resource.CustomSwipeRefreshIndicator
 import com.evg.resource.NoInternetConnection
 import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
@@ -56,7 +57,13 @@ fun EpisodeScreen(
     ) {
         SwipeRefresh(
             state = refreshingState,
-            onRefresh = { viewModel.getEpisodeInfo(episodeId) }
+            onRefresh = { viewModel.getEpisodeInfo(episodeId) },
+            indicator = { state, trigger ->
+                CustomSwipeRefreshIndicator(
+                    state = state,
+                    trigger = trigger,
+                )
+            },
         ) {
             if (isLoading) {
                 Box(
