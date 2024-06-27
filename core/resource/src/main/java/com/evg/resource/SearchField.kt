@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,9 +44,10 @@ import com.evg.resource.theme.RickAndMortyTheme
 
 @Composable
 fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (String) -> Unit) {
-    var textState by remember {
-        mutableStateOf(TextFieldValue())
+    var textState by rememberSaveable {
+        mutableStateOf("")
     }
+    val isKeyboardOpen = keyboardAsState()
 
     TextField(
         modifier = modifier
@@ -56,9 +58,9 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (St
                 shape = RoundedCornerShape(BorderRadius)
             ),
         value = textState,
-        onValueChange = {
-            newText -> textState = newText
-            onValueChange(newText.text)
+        onValueChange = { newText ->
+            textState = newText
+            onValueChange(newText)
         },
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyMedium,
@@ -83,7 +85,7 @@ fun SearchField(modifier: Modifier = Modifier.fillMaxWidth(), onValueChange: (St
             disabledContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = Color.Transparent,
+            cursorColor = if (isKeyboardOpen.value == Keyboard.Opened) Color.Unspecified else Color.Transparent,
         )
     )
 }
