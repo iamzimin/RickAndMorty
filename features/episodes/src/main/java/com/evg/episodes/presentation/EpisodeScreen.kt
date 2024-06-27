@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +34,8 @@ fun EpisodeScreen(
     episodeId: Int,
     viewModel: EpisodesViewModel = hiltViewModel<EpisodesViewModel>(),
 ) {
+    var isInitialized by rememberSaveable { mutableStateOf(false) }
+
     val episodeInfo by viewModel.episodeInfo.collectAsState()
     val episodeCharacters by viewModel.episodeCharacters.collectAsState()
     val isLoading by viewModel.isInfoLoading.collectAsState()
@@ -38,8 +43,11 @@ fun EpisodeScreen(
 
     val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
 
-    LaunchedEffect(episodeId) {
-        viewModel.getEpisodeInfo(episodeId)
+    if (!isInitialized) {
+        LaunchedEffect(episodeId) {
+            viewModel.getEpisodeInfo(episodeId)
+            isInitialized = true
+        }
     }
     Column(
         modifier = Modifier

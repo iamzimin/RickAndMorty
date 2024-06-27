@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.evg.characters.presentation.mapper.toCharacterUI
 import com.evg.characters.presentation.mapper.toEpisodeUI
 import com.evg.characters.presentation.viewmodel.CharactersViewModel
-import com.evg.resource.NoInternetConnection
 import com.evg.resource.NotFound
 import com.evg.resource.theme.EdgesMargin
 import com.evg.resource.theme.LazyColumnNoInfoPadding
@@ -32,6 +34,8 @@ fun CharacterScreen(
     characterId: Int,
     viewModel: CharactersViewModel = hiltViewModel<CharactersViewModel>(),
 ) {
+    var isInitialized by rememberSaveable { mutableStateOf(false) }
+
     val characterInfo by viewModel.characterInfo.collectAsState()
     val characterEpisodes by viewModel.characterEpisodes.collectAsState()
     val isLoading by viewModel.isInfoLoading.collectAsState()
@@ -39,8 +43,11 @@ fun CharacterScreen(
 
     val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
 
-    LaunchedEffect(characterId) {
-        viewModel.getCharacterInfo(characterId)
+    if (!isInitialized) {
+        LaunchedEffect(characterId) {
+            viewModel.getCharacterInfo(characterId)
+            isInitialized = true
+        }
     }
     Column(
         modifier = Modifier

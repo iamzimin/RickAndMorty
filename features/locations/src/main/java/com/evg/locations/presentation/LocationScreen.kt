@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +34,8 @@ fun LocationScreen(
     locationId: Int,
     viewModel: LocationViewModel = hiltViewModel<LocationViewModel>(),
 ) {
+    var isInitialized by rememberSaveable { mutableStateOf(false) }
+
     val locationInfo by viewModel.locationInfo.collectAsState()
     val locationCharacters by viewModel.locationCharacters.collectAsState()
     val isInfoLoading by viewModel.isInfoLoading.collectAsState()
@@ -38,8 +43,11 @@ fun LocationScreen(
 
     val refreshingState = rememberSwipeRefreshState(isRefreshing = false)
 
-    LaunchedEffect(locationId) {
-        viewModel.getLocationInfo(locationId)
+    if (!isInitialized) {
+        LaunchedEffect(locationId) {
+            viewModel.getLocationInfo(locationId)
+            isInitialized = true
+        }
     }
     Column(
         modifier = Modifier
